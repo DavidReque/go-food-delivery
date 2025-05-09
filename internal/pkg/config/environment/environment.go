@@ -1,7 +1,7 @@
 package environment
 
 import (
-	"fmt"
+	"log"
 	"os"
 )
 
@@ -12,15 +12,16 @@ func GetEnv(key, fallback string) string {
     if v, found := os.LookupEnv(key); found {
         return v
     }
+    log.Printf("ADVERTENCIA: la variable de entorno %q no está definida, usando valor por defecto %q", key, fallback)
     return fallback
 }
 
-// Propósito: Obtener una variable de entorno que es obligatoria para el funcionamiento del programa.
+// RequireEnv obtiene una variable de entorno obligatoria.
+// Si la variable no está definida, muestra un error crítico y termina la ejecución del programa.
 func RequireEnv(key string) string {
     v := os.Getenv(key)
     if v == "" {
-        fmt.Printf("ERROR: la variable de entorno %q es obligatoria pero no está definida\n", key)
-        os.Exit(1)
+        log.Fatalf("ERROR: la variable de entorno %q es obligatoria pero no está definida", key)
     }
     return v
 }

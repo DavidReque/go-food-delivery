@@ -1,0 +1,21 @@
+{
+  "gormOptions": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "postgres",
+    "password": "1234",
+    "dbName": "catalogs_write_service",
+    "sslMode": false
+  },
+  "rabbitmqOptions": {
+    "autoStart": true,
+    "reconnecting": true,
+    "rabbitmqHostOptions": {
+      "userName": "guest",
+      "password": "guest",
+      "hostName": "localhost",
+      "port": 5672,
+      "httpPort": 15672
+    }
+  }
+}
