@@ -22,6 +22,7 @@ vendor/
 
 # Archivos de Go que se generan automáticamente
 go.work
+go.work.sum
 
 # Archivos de IDE y editores
 .idea/
