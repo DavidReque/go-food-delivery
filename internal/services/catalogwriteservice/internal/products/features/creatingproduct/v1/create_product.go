@@ -19,6 +19,19 @@ type CreateProduct struct {
 	CreatedAt   time.Time
 }
 
+// NewCreateProduct with validation
+func NewCreateProductWithValidation(
+	name string,
+	description string,
+	price float64,
+) (*CreateProduct, error) {
+	command := NewCreateProduct(name, description, price)
+
+	err := command.Validate()
+
+	return command, err
+}
+
 // NewCreateProduct Create a new product
 func NewCreateProduct(
 	name string,
@@ -36,7 +49,6 @@ func NewCreateProduct(
 
 	return command
 }
-
 
 func (c *CreateProduct) Validate() error {
 	err := validation.ValidateStruct(
