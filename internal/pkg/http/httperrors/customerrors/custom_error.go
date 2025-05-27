@@ -83,4 +83,4 @@ func IsCustomError(err error) bool {
 func IsBadRequestError(err error) bool {
 	var badReqErr BadRequestError
 	return errors.As(err, &badReqErr)
-} 
+}
