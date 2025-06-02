@@ -21,7 +21,6 @@ func initLogger() {
 			&config.LogOptions{LogType: models.Zap, CallerEnabled: false},
 			constants.Dev,
 		)
-		break
 	default:
 		l = zap.NewZapLogger(
 			&config.LogOptions{LogType: models.Zap, CallerEnabled: false},
