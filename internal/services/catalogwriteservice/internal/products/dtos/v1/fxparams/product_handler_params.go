@@ -2,6 +2,7 @@ package fxparams
 
 import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
+	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/shared/data/dbcontext"
 	"go.uber.org/fx"
 )
 
@@ -11,5 +12,6 @@ import (
 type ProductHandlerParams struct {
 	fx.In
 
-	Log logger.Logger
+	Log               logger.Logger
+	CatalogsDBContext *dbcontext.CatalogsGormDBContext
 }
