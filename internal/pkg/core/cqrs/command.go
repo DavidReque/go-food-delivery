@@ -101,6 +101,6 @@ func getTypeName(v interface{}) string {
 }
 
 func getFullTypeName(v interface{}) string {
-	// Implementación simple - se puede mejorar con reflection  
+	// Implementación simple - se puede mejorar con reflection
 	return "cqrs.Command" // Por ahora placeholder
 }
