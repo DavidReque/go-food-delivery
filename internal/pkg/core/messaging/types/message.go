@@ -2,8 +2,11 @@ package types
 
 import (
 	"time"
+
+	"github.com/DavidReque/go-food-delivery/internal/pkg/reflection/typemapper"
 )
 
+// IMessage es una interfaz que define los métodos que debe implementar un mensaje.
 type IMessage interface {
 	GeMessageId() string
 	GetCreated() time.Time
@@ -11,11 +14,12 @@ type IMessage interface {
 	GetMessageFullTypeName() string
 }
 
+// Message es una estructura que representa un mensaje.
 type Message struct {
 	MessageId string    `json:"messageId,omitempty"`
 	Created   time.Time `json:"created"`
 	EventType string    `json:"eventType"`
-	//isMessage bool
+	isMessage bool
 }
 
 func NewMessage(messageId string) *Message {
@@ -34,10 +38,10 @@ func (m *Message) GetCreated() time.Time {
 	return m.Created
 }
 
-/*func (m *Message) GetMessageTypeName() string {
-	return typeMapper.GetTypeName(m)
+func (m *Message) GetMessageTypeName() string {
+	return typemapper.GetTypeName(m)
 }
 
 func (m *Message) GetMessageFullTypeName() string {
-	return typeMapper.GetFullTypeName(m)
-}*/
+	return typemapper.GetFullTypeName(m)
+}
