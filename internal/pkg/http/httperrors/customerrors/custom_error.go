@@ -95,6 +95,21 @@ func NewApplicationError(err error, message string) ApplicationError {
 	}
 }
 
+func NewApplicationErrorWrap(err error, message string) ApplicationError {
+	if err == nil {
+		return NewApplicationError(err, message)
+	}
+
+	applicationErrMessage := errors.WithMessage(err, "application error")
+	stackErr := errors.WrapIf(applicationErrMessage, message)
+
+	applicationError := &applicationError{
+		CustomError: NewCustomError(stackErr, http.StatusInternalServerError, message),
+	}
+
+	return applicationError
+}
+
 // IsCustomError verifica si un error es un CustomError
 func IsCustomError(err error) bool {
 	var customErr CustomError
