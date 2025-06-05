@@ -13,6 +13,7 @@ import (
 	"github.com/mehdihadeli/go-mediatr"
 )
 
+// createProductEndpoint es una estructura que representa el endpoint para crear un producto.
 type createProductEndpoint struct {
 	fxparams.ProductRouteParams
 }
@@ -27,12 +28,19 @@ func (ep *createProductEndpoint) MapEndpoint() {
 	ep.ProductsGroup.POST("", ep.handler())
 }
 
+// handler es una función que maneja la solicitud HTTP para crear un producto.
 func (ep *createProductEndpoint) handler() echo.HandlerFunc {
+	// handler es una función que maneja la solicitud HTTP para crear un producto.
 	return func(c echo.Context) error {
+		// Obtiene el contexto de la solicitud HTTP.
 		ctx := c.Request().Context()
 
+		// Crea un nuevo objeto CreateProductRequestDto.
 		request := dtos.CreateProductRequestDto{}
+
+		// Vincula los datos del request con el objeto request.
 		if err := c.Bind(request); err != nil {
+			// Si hay un error al vincular los datos, se retorna un error.
 			badRequestErr := customErrors.NewBadRequestError(
 				err,
 				"error in the binding request",
@@ -41,6 +49,7 @@ func (ep *createProductEndpoint) handler() echo.HandlerFunc {
 			return badRequestErr
 		}
 
+		// Crea un nuevo objeto CreateProduct.
 		command, err := NewCreateProductWithValidation(
 			request.Name,
 			request.Description,
@@ -50,6 +59,7 @@ func (ep *createProductEndpoint) handler() echo.HandlerFunc {
 			return err
 		}
 
+		// Envía el comando a la cola de mensajes.
 		result, err := mediatr.Send[*CreateProduct, *dtos.CreateProductResponseDto](
 			ctx,
 			command,
@@ -61,6 +71,7 @@ func (ep *createProductEndpoint) handler() echo.HandlerFunc {
 			)
 		}
 
+		// Retorna el resultado de la creación del producto.
 		return c.JSON(http.StatusCreated, result)
 	}
 }

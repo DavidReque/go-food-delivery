@@ -50,6 +50,7 @@ func NewCreateProduct(
 	return command
 }
 
+// Validate valida los campos del comando CreateProduct.
 func (c *CreateProduct) Validate() error {
 	err := validation.ValidateStruct(
 		c,
