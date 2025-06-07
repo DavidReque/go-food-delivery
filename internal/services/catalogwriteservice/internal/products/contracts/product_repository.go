@@ -7,6 +7,10 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// ProductRepository es una interfaz que define los métodos para el repositorio de productos
+// Esta interfaz es implementada por el repositorio de productos
+// Se utiliza para abstraer la implementación del repositorio de productos
+// y permitir la inyección de dependencias
 type ProductRepository interface {
 	CreateProduct(ctx context.Context, product *models.Product) (*models.Product, error)
 	GetProductById(ctx context.Context, uuid uuid.UUID) (*models.Product, error)
