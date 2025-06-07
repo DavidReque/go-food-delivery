@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -18,4 +19,27 @@ func ContextWithParentSpan(
 	span trace.Span,
 ) context.Context {
 	return context.WithValue(parent, parentSpanKey, span)
+}
+
+// TraceStatusFromContext establece el estado del trace basado en el error
+// Si hay un error, establece el estado como ERROR y registra el error
+// Si no hay error, establece el estado como OK
+func TraceStatusFromContext(ctx context.Context, err error) error {
+	span := trace.SpanFromContext(ctx)
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+		span.RecordError(err)
+		return err
+	}
+
+	span.SetStatus(codes.Ok, "")
+	return nil
+}
+
+// GetParentSpanFromContext obtiene el span padre del contexto
+func GetParentSpanFromContext(ctx context.Context) trace.Span {
+	if span, ok := ctx.Value(parentSpanKey).(trace.Span); ok {
+		return span
+	}
+	return nil
 }
