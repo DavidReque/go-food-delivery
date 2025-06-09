@@ -11,4 +11,5 @@ var Module = fx.Module(
 
 	// Other providers
 	fx.Provide(repositories.NewPostgresProductRepository),
+	//fx.Provide(grpc.NewProductGrpcService),
 )
