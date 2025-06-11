@@ -5,7 +5,7 @@ import "google/protobuf/timestamp.proto";
 
 package catalogwriteservice;
 
-option go_package = "github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/shared/grpc/genproto";
+option go_package = "./genproto";
 
 // Definir el servicio de productos.
 service ProductsService {

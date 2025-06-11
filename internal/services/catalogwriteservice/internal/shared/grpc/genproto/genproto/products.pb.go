@@ -433,7 +433,8 @@ const file_products_proto_rawDesc = "" +
 	"\x0fProductsService\x12]\n" +
 	"\rCreateProduct\x12%.catalogwriteservice.CreateProductReq\x1a%.catalogwriteservice.CreateProductRes\x12]\n" +
 	"\rUpdateProduct\x12%.catalogwriteservice.UpdateProductReq\x1a%.catalogwriteservice.UpdateProductRes\x12`\n" +
-	"\x0eGetProductById\x12&.catalogwriteservice.GetProductByIdReq\x1a&.catalogwriteservice.GetProductByIdResBlZjgithub.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/shared/grpc/genprotob\x06proto3"
+	"\x0eGetProductById\x12&.catalogwriteservice.GetProductByIdReq\x1a&.catalogwriteservice.GetProductByIdResB\fZ\n" +
+	"./genprotob\x06proto3"
 
 var (
 	file_products_proto_rawDescOnce sync.Once
