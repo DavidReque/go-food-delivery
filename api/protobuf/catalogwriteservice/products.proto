@@ -5,7 +5,7 @@ import "google/protobuf/timestamp.proto";
 
 package catalogwriteservice;
 
-option go_package = "./genproto";
+option go_package = "./;products_service";
 
 // Definir el servicio de productos.
 service ProductsService {

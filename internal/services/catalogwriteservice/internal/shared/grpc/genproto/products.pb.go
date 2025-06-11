@@ -4,7 +4,7 @@
 // 	protoc        v3.21.12
 // source: products.proto
 
-package genproto
+package products_service
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -433,8 +433,7 @@ const file_products_proto_rawDesc = "" +
 	"\x0fProductsService\x12]\n" +
 	"\rCreateProduct\x12%.catalogwriteservice.CreateProductReq\x1a%.catalogwriteservice.CreateProductRes\x12]\n" +
 	"\rUpdateProduct\x12%.catalogwriteservice.UpdateProductReq\x1a%.catalogwriteservice.UpdateProductRes\x12`\n" +
-	"\x0eGetProductById\x12&.catalogwriteservice.GetProductByIdReq\x1a&.catalogwriteservice.GetProductByIdResB\fZ\n" +
-	"./genprotob\x06proto3"
+	"\x0eGetProductById\x12&.catalogwriteservice.GetProductByIdReq\x1a&.catalogwriteservice.GetProductByIdResB\x15Z\x13./;products_serviceb\x06proto3"
 
 var (
 	file_products_proto_rawDescOnce sync.Once
