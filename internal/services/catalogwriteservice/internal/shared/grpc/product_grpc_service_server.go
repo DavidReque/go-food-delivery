@@ -14,6 +14,7 @@ import (
 	"github.com/mehdihadeli/go-mediatr"
 	"github.com/pkg/errors"
 
+	//uuid "github.com/satori/go.uuid"
 	attribute2 "go.opentelemetry.io/otel/attribute"
 	api "go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
@@ -26,6 +27,17 @@ var grpcMetricsAttr = api.WithAttributes(
 type ProductGrpcServiceServer struct {
 	catalogsMetrics *contracts.CatalogsMetrics
 	logger          logger.Logger
+}
+
+// NewProductGrpcService crea una nueva instancia del servidor gRPC para la gestión de productos
+func NewProductGrpcService(
+	catalogsMetrics *contracts.CatalogsMetrics,
+	logger logger.Logger,
+) *ProductGrpcServiceServer {
+	return &ProductGrpcServiceServer{
+		catalogsMetrics: catalogsMetrics,
+		logger:          logger,
+	}
 }
 
 // CreateProduct es un método del servidor gRPC que maneja la creación de nuevos productos.
@@ -92,3 +104,42 @@ func (s *ProductGrpcServiceServer) CreateProduct(
 		ProductId: result.ProductID.String(),
 	}, nil
 }
+
+/*func (s *ProductGrpcServiceServer) UpdateProduct(
+	ctx context.Context,
+	req *productsService.UpdateProductReq,
+) (*productsService.UpdateProductRes, error) {
+	// Obtiene el span de tracing del contexto para monitoreo y observabilidad
+	s.catalogsMetrics.UpdateProductGrpcRequests.Add(ctx, 1, grpcMetricsAttr)
+
+	// Obtiene el span de tracing del contexto para monitoreo y observabilidad
+	span := trace.SpanFromContext(ctx)
+	// Agrega los datos de la solicitud como atributos del span
+	span.SetAttributes(attribute.Object("Request", req))
+
+	// Convierte el ID del producto a un UUID
+	productUUID, err := uuid.FromString(req.GetProductId())
+	// Si ocurre un error al convertir el ID del producto a un UUID, se retorna un error de bad request
+	if err != nil {
+		// Crea un error de bad request con stack trace
+		badRequestErr := customErrors.NewBadRequestErrorWrap(
+			err,
+			"[ProductGrpcServiceServer_UpdateProduct.uuid.FromString] error in converting uuid",
+		)
+		// Registra el error de bad request en los logs
+		s.logger.Errorf(
+			fmt.Sprintf(
+				"[ProductGrpcServiceServer_UpdateProduct.uuid.FromString] err: %v",
+				badRequestErr,
+			),
+		)
+		return nil, badRequestErr
+	}
+
+	command, err := updateProductCommandV1.NewUpdateProductWithValidation(
+		productUUID,
+		req.GetName(),
+		req.GetDescription(),
+		req.GetPrice(),
+	)
+}*/
