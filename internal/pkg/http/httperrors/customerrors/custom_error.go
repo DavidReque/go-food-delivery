@@ -88,6 +88,22 @@ func NewBadRequestError(err error, message string) BadRequestError {
 	}
 }
 
+// NewBadRequestErrorWrap crea un nuevo error de bad request (400) con stack trace
+func NewBadRequestErrorWrap(err error, message string) BadRequestError {
+	if err == nil {
+		return NewBadRequestError(err, message)
+	}
+
+	badRequestErrMessage := errors.WithMessage(err, "bad request error")
+	stackErr := errors.WrapIf(badRequestErrMessage, message)
+
+	badRequestError := &badRequestError{
+		CustomError: NewCustomError(stackErr, http.StatusBadRequest, message),
+	}
+
+	return badRequestError
+}
+
 // NewApplicationError crea un nuevo error de aplicación (500)
 func NewApplicationError(err error, message string) ApplicationError {
 	return &applicationError{
