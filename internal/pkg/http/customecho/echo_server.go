@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/config"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -17,15 +18,24 @@ type EchoServer interface {
 	Shutdown(ctx context.Context) error
 	// GetInstance devuelve la instancia del servidor
 	GetInstance() *echo.Echo
+	// ConfigGroup configura un grupo de rutas
+	ConfigGroup(groupName string, groupFunc func(group *echo.Group))
+	// AddMiddlewares añade middlewares al servidor
+	AddMiddlewares(middlewares ...echo.MiddlewareFunc)
+	// SetupDefaultMiddlewares configura los middlewares por defecto
+	SetupDefaultMiddlewares()
+	// Config devuelve la configuración del servidor
+	Config() *config.EchoHttpOptions
 }
 
 type echoServer struct {
 	echo   *echo.Echo
 	config *config.EchoHttpOptions
+	logger logger.Logger
 }
 
 // NewEchoServer crea una nueva instancia del servidor
-func NewEchoServer(cfg *config.EchoHttpOptions) EchoServer {
+func NewEchoServer(cfg *config.EchoHttpOptions, log logger.Logger) EchoServer {
 	if cfg == nil {
 		cfg = config.DefaultConfig()
 	}
@@ -36,14 +46,28 @@ func NewEchoServer(cfg *config.EchoHttpOptions) EchoServer {
 	server := &echoServer{
 		echo:   e,
 		config: cfg,
+		logger: log,
 	}
 
-	server.setupMiddlewares()
 	return server
 }
 
-// setupMiddlewares configura los middlewares del servidor
-func (s *echoServer) setupMiddlewares() {
+func (s *echoServer) ConfigGroup(groupName string, groupFunc func(group *echo.Group)) {
+	groupFunc(s.echo.Group(groupName))
+}
+
+func (s *echoServer) AddMiddlewares(middlewares ...echo.MiddlewareFunc) {
+	if len(middlewares) > 0 {
+		s.echo.Use(middlewares...)
+	}
+}
+
+func (s *echoServer) Config() *config.EchoHttpOptions {
+	return s.config
+}
+
+// SetupDefaultMiddlewares configura los middlewares del servidor
+func (s *echoServer) SetupDefaultMiddlewares() {
 	// Recuperación de pánico
 	s.echo.Use(middleware.Recover())
 

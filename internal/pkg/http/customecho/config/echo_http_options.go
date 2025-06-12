@@ -7,7 +7,7 @@ import (
 	//"github.com/iancoleman/strcase"
 )
 
-//var optionName = strcase.ToLowerCamel("EchoHttpOptions")
+// var optionName = strcase.ToLowerCamel("EchoHttpOptions")
 // EchoHttpOptions contiene la configuración del servidor
 type EchoHttpOptions struct {
 	// Port es el puerto en el que se iniciará el servidor
