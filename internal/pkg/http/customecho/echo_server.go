@@ -3,8 +3,8 @@ package customecho
 import (
 	"context"
 	"net/http"
-	"time"
 
+	"github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/config"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -19,59 +19,25 @@ type EchoServer interface {
 	GetInstance() *echo.Echo
 }
 
-// Config contiene la configuración del servidor
-type Config struct {
-	// Port es el puerto en el que se iniciará el servidor
-	Port string
-	// ReadTimeout es el tiempo máximo de espera para leer las peticiones
-	ReadTimeout time.Duration
-	// WriteTimeout es el tiempo máximo de espera para escribir las respuestas
-	WriteTimeout time.Duration
-	// MaxHeaderBytes es el tamaño máximo de los encabezados de las peticiones
-	MaxHeaderBytes int
-	// BodyLimit es el tamaño máximo del cuerpo de las peticiones
-	BodyLimit string
-	// EnableGzip habilita la compresión gzip
-	EnableGzip bool
-	// EnableRateLimit habilita el límite de tasa de las peticiones
-	EnableRateLimit bool
-}
-
-// DefaultConfig retorna una configuración por defecto
-func DefaultConfig() *Config {
-
-	return &Config{
-		Port:            ":8080",
-		ReadTimeout:     time.Second * 30,
-		WriteTimeout:    time.Second * 30,
-		MaxHeaderBytes:  1 << 20, // 1 MB
-		BodyLimit:       "2M",
-		EnableGzip:      true,
-		EnableRateLimit: true,
-	}
-}
-
 type echoServer struct {
 	echo   *echo.Echo
-	config *Config
+	config *config.EchoHttpOptions
 }
 
 // NewEchoServer crea una nueva instancia del servidor
-func NewEchoServer(config *Config) EchoServer {
-	if config == nil {
-		config = DefaultConfig()
+func NewEchoServer(cfg *config.EchoHttpOptions) EchoServer {
+	if cfg == nil {
+		cfg = config.DefaultConfig()
 	}
 
-	// Creación de la instancia del servidor
 	e := echo.New()
 	e.HideBanner = true
 
 	server := &echoServer{
 		echo:   e,
-		config: config,
+		config: cfg,
 	}
 
-	// Configuración de los middlewares
 	server.setupMiddlewares()
 	return server
 }
@@ -86,9 +52,7 @@ func (s *echoServer) setupMiddlewares() {
 
 	// CORS
 	s.echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		// Permite todas las origenes
 		AllowOrigins: []string{"*"},
-		// Permite los métodos HTTP permitidos
 		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
 
