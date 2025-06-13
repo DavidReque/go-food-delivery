@@ -9,7 +9,7 @@ import (
 )
 
 // EchoGHttpServer es la interfaz que define los métodos del servidor HTTP
-type EchoGHttpServer interface {
+type EchoHttpServer interface {
 	RunHttpServer(configEcho ...func(echo *echo.Echo)) error
 	GracefulShutdown(ctx context.Context) error
 	ApplyVersioningFromHeader()
@@ -17,7 +17,7 @@ type EchoGHttpServer interface {
 	Logger() logger.Logger
 	Cfg() *config.EchoHttpOptions
 	SetupDefaultMiddlewares()
-	//RouteBuilder() *RouteBuilder
+	RouteBuilder() *RouteBuilder
 	AddMiddlewares(middlewares ...echo.MiddlewareFunc)
 	ConfigGroup(groupName string, groupFunc func(group *echo.Group))
 }
