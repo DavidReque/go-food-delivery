@@ -1,8 +1,11 @@
 package products
 
 import (
+	"github.com/DavidReque/go-food-delivery/internal/pkg/core/cqrs"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/core/web/route"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/contracts"
 	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/products/data/repositories"
+	creatingproductv1 "github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/products/features/creatingproduct/v1"
 	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/shared/grpc"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/fx"
@@ -41,5 +44,21 @@ var Module = fx.Module(
 			// Etiquetamos el grupo resultante para que pueda ser inyectado en otros componentes
 			// usando el nombre "product-echo-group"
 			fx.ResultTags(`name:"product-echo-group"`)),
+	),
+
+	// add cqrs handlers to DI
+	fx.Provide(
+		cqrs.AsHandler(
+			creatingproductv1.NewCreateProductHandler,
+			"product-handlers",
+		),
+	),
+
+	// add endpoints to DI
+	fx.Provide(
+		route.AsRoute(
+			creatingproductv1.NewCreteProductEndpoint,
+			"product-routes",
+		),
 	),
 )
