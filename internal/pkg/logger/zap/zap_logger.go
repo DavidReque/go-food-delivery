@@ -3,6 +3,7 @@ package zap
 import (
 	"time"
 
+	"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger/config"
 	"go.uber.org/zap"
@@ -14,11 +15,11 @@ type zapLogger struct {
 	sugar  *zap.SugaredLogger
 }
 
-func NewZapLogger(options *config.LogOptions, env string) logger.Logger {
+func NewZapLogger(options *config.LogOptions, env environment.Environment) logger.Logger {
 	// Configura el logger según el ambiente (development/production)
 	var config zap.Config
 
-	if env == "production" {
+	if env.IsProduction() {
 		config = zap.NewProductionConfig()
 	} else {
 		config = zap.NewDevelopmentConfig()
