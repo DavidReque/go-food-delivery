@@ -21,9 +21,5 @@ type LogOptions struct {
 // env: entorno de la aplicación
 // devuelve las opciones de configuración para el logger
 func ProvideLogConfig(env environment.Environment) (*LogOptions, error) {
-	options := &LogOptions{}
-	if err := config.BindConfigKey(optionName, options); err != nil {
-		return nil, err
-	}
-	return options, nil
+	return config.BindConfigKey[LogOptions](optionName)
 }
