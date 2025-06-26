@@ -16,8 +16,7 @@ type OTLPProvider struct {
 	OTLPHeaders  map[string]string `mapstructure:"otlpHeaders"`  // Cabeceras adicionales, como las de autenticación.
 }
 
-// MetricsOptions encapsula todas las opciones de configuración para el sistema de métricas.
-// Esta estructura se rellena a partir de los archivos de configuración de la aplicación.
+// MetricsOptions contiene la configuración para el servicio de métricas
 type MetricsOptions struct {
 	Host                string `mapstructure:"host"`                // Host donde se expondrá el endpoint de métricas (ej. para Prometheus).
 	Port                string `mapstructure:"port"`                // Puerto para el endpoint de métricas.
