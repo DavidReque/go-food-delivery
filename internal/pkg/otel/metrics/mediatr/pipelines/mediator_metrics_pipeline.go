@@ -23,6 +23,21 @@ type mediatorMetricsPipeline struct {
 	meter  metrics.AppMetrics // medidor de métricas
 }
 
+func NewMediatorMetricsPipeline(
+	appMetrics metrics.AppMetrics,
+	opts ...Option,
+) mediatr.PipelineBehavior {
+	cfg := defaultConfig
+	for _, opt := range opts {
+		opt.apply(cfg)
+	}
+
+	return &mediatorMetricsPipeline{
+		config: cfg,
+		meter:  appMetrics,
+	}
+}
+
 func (r *mediatorMetricsPipeline) Handle(
 	ctx context.Context, // contexto de la solicitud
 	request interface{}, // solicitud a procesar
