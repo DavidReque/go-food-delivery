@@ -16,6 +16,16 @@ type mediatorTransactionPipeline struct {
 	db     *gorm.DB
 }
 
+func NewMediatorTransactionPipeline(
+	l logger.Logger,
+	db *gorm.DB,
+) mediatr.PipelineBehavior {
+	return &mediatorTransactionPipeline{
+		logger: l,
+		db:     db,
+	}
+}
+
 func (m *mediatorTransactionPipeline) Handle(
 	ctx context.Context,
 	request interface{},
