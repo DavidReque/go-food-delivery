@@ -33,7 +33,6 @@ func (ic *InfrastructureConfigurator) ConfigInfrastructures() {
 					metricspipelines.WithLogger(l),
 				),
 				postgrespipelines.NewMediatorTransactionPipeline(l, db),
-
 			)
 		},
 	)
