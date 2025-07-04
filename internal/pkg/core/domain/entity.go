@@ -7,10 +7,10 @@ import (
 )
 
 type Entity struct {
-	id uuid.UUID
+	id         uuid.UUID
 	entityType string
-	createdAt time.Time
-	updatedAt time.Time
+	createdAt  time.Time
+	updatedAt  time.Time
 }
 
 type EntityDataModel struct {
@@ -31,8 +31,8 @@ type IEntity interface {
 // NewEntityWithId creates a new Entity with an id
 func NewEntityWithId(id uuid.UUID, entityType string) *Entity {
 	return &Entity{
-		id: id,
-		createdAt: time.Now(),
+		id:         id,
+		createdAt:  time.Now(),
 		entityType: entityType,
 	}
 }
@@ -40,7 +40,7 @@ func NewEntityWithId(id uuid.UUID, entityType string) *Entity {
 // NewEntity creates a new Entity
 func NewEntity(entityType string) *Entity {
 	return &Entity{
-		createdAt: time.Now(),
+		createdAt:  time.Now(),
 		entityType: entityType,
 	}
 }

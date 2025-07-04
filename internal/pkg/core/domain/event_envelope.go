@@ -8,6 +8,3 @@ type EventEnvelope struct {
 	EventData interface{}
 	Metadata  metadata.Metadata
 }
-
-
-
