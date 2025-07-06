@@ -8,7 +8,7 @@ import (
 
 type EventSerializer interface {
 	// Serialize a domain event to a byte array
-	Serialize(event domain.IDomainEvent) (*EventSerializationResult, error) 
+	Serialize(event domain.IDomainEvent) (*EventSerializationResult, error)
 	// Serialize an object to a byte array
 	SerializeObject(event interface{}) (*EventSerializationResult, error)
 	// Deserialize a byte array to a domain event
