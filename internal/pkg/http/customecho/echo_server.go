@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/config"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/contracts"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -28,14 +29,16 @@ type EchoServer interface {
 	Config() *config.EchoHttpOptions
 }
 
-type echoServer struct {
+type echoHttpServer struct {
 	echo   *echo.Echo
 	config *config.EchoHttpOptions
 	logger logger.Logger
+	//meter metric.Meter
+	routeBuilder *contracts.RouteBuilder
 }
 
 // NewEchoServer crea una nueva instancia del servidor
-func NewEchoServer(cfg *config.EchoHttpOptions, log logger.Logger) EchoServer {
+func NewEchoHttpServer(cfg *config.EchoHttpOptions, log logger.Logger) EchoServer {
 	if cfg == nil {
 		cfg = config.DefaultConfig()
 	}
@@ -43,7 +46,7 @@ func NewEchoServer(cfg *config.EchoHttpOptions, log logger.Logger) EchoServer {
 	e := echo.New()
 	e.HideBanner = true
 
-	server := &echoServer{
+	server := &echoHttpServer{
 		echo:   e,
 		config: cfg,
 		logger: log,
@@ -52,22 +55,22 @@ func NewEchoServer(cfg *config.EchoHttpOptions, log logger.Logger) EchoServer {
 	return server
 }
 
-func (s *echoServer) ConfigGroup(groupName string, groupFunc func(group *echo.Group)) {
+func (s *echoHttpServer) ConfigGroup(groupName string, groupFunc func(group *echo.Group)) {
 	groupFunc(s.echo.Group(groupName))
 }
 
-func (s *echoServer) AddMiddlewares(middlewares ...echo.MiddlewareFunc) {
+func (s *echoHttpServer) AddMiddlewares(middlewares ...echo.MiddlewareFunc) {
 	if len(middlewares) > 0 {
 		s.echo.Use(middlewares...)
 	}
 }
 
-func (s *echoServer) Config() *config.EchoHttpOptions {
+func (s *echoHttpServer) Config() *config.EchoHttpOptions {
 	return s.config
 }
 
 // SetupDefaultMiddlewares configura los middlewares del servidor
-func (s *echoServer) SetupDefaultMiddlewares() {
+func (s *echoHttpServer) SetupDefaultMiddlewares() {
 	// Recuperación de pánico
 	s.echo.Use(middleware.Recover())
 
@@ -97,7 +100,7 @@ func (s *echoServer) SetupDefaultMiddlewares() {
 	}
 }
 
-func (s *echoServer) Start() error {
+func (s *echoHttpServer) Start() error {
 	s.echo.Server.ReadTimeout = s.config.ReadTimeout
 	s.echo.Server.WriteTimeout = s.config.WriteTimeout
 	s.echo.Server.MaxHeaderBytes = s.config.MaxHeaderBytes
@@ -105,10 +108,10 @@ func (s *echoServer) Start() error {
 	return s.echo.Start(s.config.Port)
 }
 
-func (s *echoServer) Shutdown(ctx context.Context) error {
+func (s *echoHttpServer) Shutdown(ctx context.Context) error {
 	return s.echo.Shutdown(ctx)
 }
 
-func (s *echoServer) GetInstance() *echo.Echo {
+func (s *echoHttpServer) GetInstance() *echo.Echo {
 	return s.echo
 }

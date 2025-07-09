@@ -4,10 +4,16 @@ import (
 	"fmt"
 	"net/url"
 	"time"
+
+	"github.com/DavidReque/go-food-delivery/internal/pkg/config"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/reflection/typemapper"
+	"github.com/iancoleman/strcase"
 	//"github.com/iancoleman/strcase"
 )
 
-// var optionName = strcase.ToLowerCamel("EchoHttpOptions")
+	var optionName = strcase.ToLowerCamel(typemapper.GetGenericTypeNameByT[EchoHttpOptions]())
+
 // EchoHttpOptions contiene la configuración del servidor
 type EchoHttpOptions struct {
 	// Port es el puerto en el que se iniciará el servidor
@@ -64,3 +70,7 @@ func (c *EchoHttpOptions) BasePathAddress() string {
 	}
 	return path
 }
+
+func ProvideConfig(environment environment.Environment) (*EchoHttpOptions, error) {
+	return config.BindConfigKey[EchoHttpOptions](optionName)
+} 
