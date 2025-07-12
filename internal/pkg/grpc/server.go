@@ -81,10 +81,10 @@ func NewGrpcServer(
 	)
 
 	return &grpcServer{
-		server: s,
-		config: config,
-		log:    logger,
-		serviceName: config.Name,
+		server:         s,
+		config:         config,
+		log:            logger,
+		serviceName:    config.Name,
 		serviceBuilder: NewGrpcServiceBuilder(s),
 	}
 }
