@@ -126,6 +126,17 @@ func NewApplicationErrorWrap(err error, message string) ApplicationError {
 	return applicationError
 }
 
+func GetCustomError(err error) CustomError {
+	if IsCustomError(err) {
+		var internalErr CustomError
+		errors.As(err, &internalErr)
+
+		return internalErr
+	}
+
+	return nil
+}
+
 // IsCustomError verifica si un error es un CustomError
 func IsCustomError(err error) bool {
 	var customErr CustomError
