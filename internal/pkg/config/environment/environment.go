@@ -106,9 +106,9 @@ func loadEnvFilesRecursive() error {
 }
 
 // setRootWorkingDirectoryEnvironment establece la variable de entorno APP_ROOT_PATH en viper
-/*func setRootWorkingDirectoryEnvironment() {
+func setRootWorkingDirectoryEnvironment() {
 	absoluteRootWorkingDirectory := GetProjectRootWorkingDirectory()
 
 	// when we `Set` a viper with string value, we should get it from viper with `viper.GetString`, elsewhere we get empty string
 	viper.Set(constants.AppRootPath, absoluteRootWorkingDirectory)
-}*/
+}
