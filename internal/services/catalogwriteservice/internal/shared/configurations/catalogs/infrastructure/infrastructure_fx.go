@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/grpc"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/migration/goose"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/postgresmessaging"
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho"
@@ -22,4 +23,5 @@ var Module = fx.Module(
 	grpc.Module,
 	postgresgorm.Module,
 	postgresmessaging.Module,
+	goose.Module,
 )
