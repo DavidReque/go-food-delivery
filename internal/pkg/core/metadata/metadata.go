@@ -1,5 +1,10 @@
 package metadata
 
+import (
+	"encoding/json"
+	"time"
+)
+
 // Metadata es un tipo map[string]interface{} que representa los metadatos de un mensaje
 // Se utiliza para transportar información adicional entre componentes de la aplicación
 type Metadata map[string]interface{}
@@ -47,6 +52,25 @@ func MapToMetadata(data map[string]interface{}) Metadata {
 // MetadataToMap convierte un tipo Metadata a un map[string]interface{}
 func MetadataToMap(meta Metadata) map[string]interface{} {
 	return meta
+}
+
+// GetString obtiene el valor de una clave específica en los metadatos
+func (m Metadata) GetString(key string) string {
+	return m[key].(string)
+}
+
+// GetTime obtiene el valor de una clave específica en los metadatos
+func (m Metadata) GetTime(key string) time.Time {
+	return m[key].(time.Time)
+}
+
+// ToJson convierte los metadatos a un JSON
+func (m Metadata) ToJson() string {
+	json, err := json.Marshal(m)
+	if err != nil {
+		return ""
+	}
+	return string(json)
 }
 
 // FromMetadata devuelve un tipo Metadata a partir de un tipo Metadata
