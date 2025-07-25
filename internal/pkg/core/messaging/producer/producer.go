@@ -19,5 +19,5 @@ type Producer interface {
 		totopicOrExchangeName string,
 	) error
 	// IsProduced verifica si un mensaje ha sido publicado
-	IsProduced(func(message types.IMessage) bool)
+	IsProduced(func(message types.IMessage))
 }
