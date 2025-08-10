@@ -138,7 +138,7 @@ func Paginate[TDataModel any, TEntity any](
 	}
 
 	// Mapear los resultados al tipo de entidad
-	entities, err := mapper.MapSlice[TEntity](items)
+	entities, err := mapper.MapSlice[TDataModel, TEntity](items)
 	if err != nil {
 		return nil, fmt.Errorf("error mapping items to entities: %w", err)
 	}
