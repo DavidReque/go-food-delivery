@@ -105,6 +105,14 @@ func (s *ProductGrpcServiceServer) CreateProduct(
 	}, nil
 }
 
+func (s *ProductGrpcServiceServer) GetProductById(
+	ctx context.Context,
+	req *productsService.GetProductByIdReq,
+) (*productsService.GetProductByIdRes, error) {
+	// TODO: Implement GetProductById
+	return nil, errors.New("GetProductById not implemented")
+}
+
 /*func (s *ProductGrpcServiceServer) UpdateProduct(
 	ctx context.Context,
 	req *productsService.UpdateProductReq,
