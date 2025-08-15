@@ -18,6 +18,14 @@ type InfrastructureConfigurator struct {
 	contracts.Application
 }
 
+func NewInfrastructureConfigurator(
+	fxapp contracts.Application,
+) *InfrastructureConfigurator {
+	return &InfrastructureConfigurator{
+		Application: fxapp,
+	}
+}
+
 func (ic *InfrastructureConfigurator) ConfigInfrastructures() {
 	ic.ResolveFunc(
 		func(l logger.Logger, tracer tracing.AppTracer, metrics metrics.AppMetrics, db *gorm.DB) error {
