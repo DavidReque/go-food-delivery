@@ -113,11 +113,11 @@ func (s *ProductGrpcServiceServer) GetProductById(
 	return nil, errors.New("GetProductById not implemented")
 }
 
-/*func (s *ProductGrpcServiceServer) UpdateProduct(
+func (s *ProductGrpcServiceServer) UpdateProduct(
 	ctx context.Context,
 	req *productsService.UpdateProductReq,
 ) (*productsService.UpdateProductRes, error) {
-	// Obtiene el span de tracing del contexto para monitoreo y observabilidad
+	/*// Obtiene el span de tracing del contexto para monitoreo y observabilidad
 	s.catalogsMetrics.UpdateProductGrpcRequests.Add(ctx, 1, grpcMetricsAttr)
 
 	// Obtiene el span de tracing del contexto para monitoreo y observabilidad
@@ -143,11 +143,12 @@ func (s *ProductGrpcServiceServer) GetProductById(
 		)
 		return nil, badRequestErr
 	}
-
 	command, err := updateProductCommandV1.NewUpdateProductWithValidation(
 		productUUID,
 		req.GetName(),
 		req.GetDescription(),
 		req.GetPrice(),
-	)
-}*/
+	)*/
+	return nil, errors.New("UpdateProduct not implemented")
+}
+
