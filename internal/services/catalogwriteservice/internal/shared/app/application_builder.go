@@ -15,6 +15,12 @@ func NewCatalogsWriteApplicationBuilder() *CatalogsWriteApplicationBuilder {
 	return builder
 }
 
-/*func (a *CatalogsWriteApplicationBuilder) Build() *CatalogsWriteApplication {
-	return NewCatalogsWriteApplication 
-}*/
+func (a *CatalogsWriteApplicationBuilder) Build() *CatalogsWriteApplication {
+	return NewCatalogsWriteApplication(
+		a.GetProvides(),
+		a.GetDecorates(),
+		a.Options(),
+		a.Logger(),
+		a.Environment(),
+	)
+}
