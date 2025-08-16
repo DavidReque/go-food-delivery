@@ -1,5 +1,7 @@
 github.com/DavidReque/go-food-delivery/internal/pkg v0.0.0-20250510055555-9df404f4fef5 h1:Rxk7nu8VjrJ0HnuLlrFXKsgPBx0NG5CU7MgRO6j8d34=
 github.com/DavidReque/go-food-delivery/internal/pkg v0.0.0-20250510055555-9df404f4fef5/go.mod h1:6kNW5rQFlWVy7oCmHXgoxjjBWtF391zBcfE9ugbSww4=
+github.com/brianvoe/gofakeit/v7 v7.3.0 h1:TWStf7/lLpAjKw+bqwzeORo9jvrxToWEwp9b1J2vApQ=
+github.com/brianvoe/gofakeit/v7 v7.3.0/go.mod h1:QXuPeBw164PJCzCUZVmgpgHJ3Llj49jSLVkKPMtxtxA=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

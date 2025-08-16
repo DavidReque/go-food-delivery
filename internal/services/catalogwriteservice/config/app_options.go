@@ -21,7 +21,7 @@ func NewAppOptions(environment environment.Environment) (*AppOptions, error) {
 		return nil, err
 	}
 
-	return &cfg, nil
+	return cfg, nil
 }
 
 func (cfg *AppOptions) GetMicroserviceNameUpper() string {
