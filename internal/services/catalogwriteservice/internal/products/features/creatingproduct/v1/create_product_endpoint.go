@@ -39,7 +39,7 @@ func (ep *createProductEndpoint) handler() echo.HandlerFunc {
 		request := dtos.CreateProductRequestDto{}
 
 		// Vincula los datos del request con el objeto request.
-		if err := c.Bind(request); err != nil {
+		if err := c.Bind(&request); err != nil {
 			// Si hay un error al vincular los datos, se retorna un error.
 			badRequestErr := customErrors.NewBadRequestError(
 				err,
