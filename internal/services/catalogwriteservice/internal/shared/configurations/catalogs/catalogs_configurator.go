@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
+	//"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/fxapp/contracts"
 	echocontracts "github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/contracts"
 	migrationcontracts "github.com/DavidReque/go-food-delivery/internal/pkg/migration/contracts"
@@ -54,12 +54,13 @@ func (ic *CatalogsServiceConfigurator) ConfigureCatalogs() error {
 			}
 
 			// if we are not in test environment, seed the database
-			if ic.Environment() != environment.Test {
-				err = ic.seedCatalogs(db)
-				if err != nil {
-					return err
-				}
-			}
+			// TEMPORARILY DISABLED: Seeding requires tables to exist (created by migrations)
+			// if ic.Environment() != environment.Test {
+			// 	err = ic.seedCatalogs(db)
+			// 	if err != nil {
+			// 		return err
+			// 	}
+			// }
 
 			return nil
 		},
