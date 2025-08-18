@@ -38,7 +38,7 @@ type echoHttpServer struct {
 }
 
 // NewEchoServer crea una nueva instancia del servidor
-func NewEchoHttpServer(cfg *config.EchoHttpOptions, log logger.Logger) EchoServer {
+func NewEchoHttpServer(cfg *config.EchoHttpOptions, log logger.Logger) contracts.EchoHttpServer {
 	if cfg == nil {
 		cfg = config.DefaultConfig()
 	}
@@ -114,4 +114,46 @@ func (s *echoHttpServer) Shutdown(ctx context.Context) error {
 
 func (s *echoHttpServer) GetInstance() *echo.Echo {
 	return s.echo
+}
+
+// Implementación de los métodos de contracts.EchoHttpServer
+
+func (s *echoHttpServer) ApplyVersioningFromHeader() {
+	// TODO: Implementar versionado desde headers
+}
+
+func (s *echoHttpServer) RunHttpServer(configEcho ...func(echo *echo.Echo)) error {
+	// Aplicar configuraciones opcionales
+	for _, config := range configEcho {
+		config(s.echo)
+	}
+	
+	// Usar el método Start existente
+	return s.Start()
+}
+
+func (s *echoHttpServer) GracefulShutdown(ctx context.Context) error {
+	// Usar el método Shutdown existente
+	return s.Shutdown(ctx)
+}
+
+func (s *echoHttpServer) GetEchoInstance() *echo.Echo {
+	// Usar el método GetInstance existente
+	return s.GetInstance()
+}
+
+func (s *echoHttpServer) Logger() logger.Logger {
+	return s.logger
+}
+
+func (s *echoHttpServer) Cfg() *config.EchoHttpOptions {
+	// Usar el método Config existente
+	return s.Config()
+}
+
+func (s *echoHttpServer) RouteBuilder() *contracts.RouteBuilder {
+	if s.routeBuilder == nil {
+		s.routeBuilder = contracts.NewRouteBuilder(s.echo)
+	}
+	return s.routeBuilder
 }

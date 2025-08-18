@@ -31,6 +31,7 @@ var (
 		fx.Annotate(
 			NewEchoHttpServer,
 			fx.ParamTags(``, ``, `optional:"true"`),
+			fx.As(new(contracts.EchoHttpServer)),
 		),
 	))
 
