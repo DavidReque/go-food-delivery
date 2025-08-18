@@ -17,7 +17,7 @@ var Module = fx.Module(
 		fx.Annotate(
 			NewGormHealthChecker,
 			fx.As(new(contracts.Health)),
-			fx.ResultTags(fmt.Sprintf(`group: %s`, "healths")),
+			fx.ResultTags(fmt.Sprintf(`group:"%s"`, "healths")),
 		),
 	),
 )

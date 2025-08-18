@@ -32,12 +32,22 @@ func NewGoosePostgres(
 }
 
 func (m *goosePostgresMigrator) Up(_ context.Context, version uint) error {
+	if m.config.SkipMigration {
+		m.logger.Info("database migration skipped")
+		return nil
+	}
+
 	err := m.executeCommand(migration.Up, version)
 
 	return err
 }
 
 func (m *goosePostgresMigrator) Down(_ context.Context, version uint) error {
+	if m.config.SkipMigration {
+		m.logger.Info("database migration skipped")
+		return nil
+	}
+
 	err := m.executeCommand(migration.Down, version)
 
 	return err

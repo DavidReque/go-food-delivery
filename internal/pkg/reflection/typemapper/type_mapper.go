@@ -29,50 +29,9 @@ func init() {
 }
 
 func discoverTypes() {
-	typ := reflect.TypeOf(0)
-	sections, offset := typelinks2()
-	for i, offs := range offset {
-		rodata := sections[i]
-		for _, off := range offs {
-			emptyInterface := (*emptyInterface)(unsafe.Pointer(&typ))
-			emptyInterface.data = resolveTypeOff(rodata, off)
-			if typ.Kind() == reflect.Ptr &&
-				typ.Elem().Kind() == reflect.Struct {
-				// just discover pointer types, but we also register this pointer type actual struct type to the registry
-				loadedTypePtr := typ
-				loadedType := typ.Elem()
-
-				pkgTypes := packages[loadedType.PkgPath()]
-				pkgTypesPtr := packages[loadedTypePtr.PkgPath()]
-
-				if pkgTypes == nil {
-					pkgTypes = map[string][]reflect.Type{}
-					packages[loadedType.PkgPath()] = pkgTypes
-				}
-				if pkgTypesPtr == nil {
-					pkgTypesPtr = map[string][]reflect.Type{}
-					packages[loadedTypePtr.PkgPath()] = pkgTypesPtr
-				}
-
-				types[GetFullTypeNameByType(loadedType)] = append(
-					types[GetFullTypeNameByType(loadedType)],
-					loadedType,
-				)
-				types[GetFullTypeNameByType(loadedTypePtr)] = append(
-					types[GetFullTypeNameByType(loadedTypePtr)],
-					loadedTypePtr,
-				)
-				types[GetTypeNameByType(loadedType)] = append(
-					types[GetTypeNameByType(loadedType)],
-					loadedType,
-				)
-				types[GetTypeNameByType(loadedTypePtr)] = append(
-					types[GetTypeNameByType(loadedTypePtr)],
-					loadedTypePtr,
-				)
-			}
-		}
-	}
+	// Versión simplificada sin usar typelinks2() que no está disponible
+	// Los tipos se registrarán manualmente usando RegisterType()
+	// Esta funcionalidad se puede implementar de forma más segura en el futuro
 }
 
 func RegisterType(typ reflect.Type) {

@@ -6,22 +6,21 @@ import (
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/config"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
-	typeMapper "github.com/DavidReque/go-food-delivery/internal/pkg/reflection/typemapper"
-	"github.com/iancoleman/strcase"
+	//typeMapper "github.com/DavidReque/go-food-delivery/internal/pkg/reflection/typemapper"
 )
 
-var optionName = strcase.ToLowerCamel(typeMapper.GetGenericTypeNameByT[GormOptions]())
+var optionName = "gorm" // strcase.ToLowerCamel(typeMapper.GetGenericTypeNameByT[GormOptions]())
 
 type GormOptions struct {
-	UseInMemory   bool   `mapstructure:"useInMemory"`
-	UseSQLLite    bool   `mapstructure:"useSqlLite"`
-	Host          string `mapstructure:"host"`
-	Port          int    `mapstructure:"port"`
-	User          string `mapstructure:"user"`
-	DBName        string `mapstructure:"dbName"`
-	SSLMode       bool   `mapstructure:"sslMode"`
-	Password      string `mapstructure:"password"`
-	EnableTracing bool   `mapstructure:"enableTracing" default:"true"`
+	UseInMemory   bool   `mapstructure:"useInMemory" json:"useInMemory"`
+	UseSQLLite    bool   `mapstructure:"useSqlLite" json:"useSqlLite"`
+	Host          string `mapstructure:"host" json:"host"`
+	Port          int    `mapstructure:"port" json:"port"`
+	User          string `mapstructure:"user" json:"user"`
+	DBName        string `mapstructure:"dbName" json:"dbName"`
+	SSLMode       bool   `mapstructure:"sslMode" json:"sslMode"`
+	Password      string `mapstructure:"password" json:"password"`
+	EnableTracing bool   `mapstructure:"enableTracing" default:"true" json:"enableTracing"`
 }
 
 func (h *GormOptions) Dns() string {
