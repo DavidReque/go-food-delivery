@@ -1,0 +1,11 @@
+package dtos
+
+import (
+	"github.com/DavidReque/go-food-delivery/internal/pkg/utils"
+	dtoV1 "github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/products/dtos/v1"
+)
+
+// https://echo.labstack.com/guide/response/
+type GetProductsResponseDto struct {
+	Products *utils.ListResult[*dtoV1.ProductDto]
+}
