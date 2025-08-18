@@ -9,29 +9,29 @@
     "host": "localhost",
     "development": true
   },
-  "echoHttpOptions": {
-    "name": "catalogwriteservice",
-    "port": ":7000",
-    "development": true,
-    "timeout": 30,
-    "basePath": "/api/v1",
-    "host": "http://localhost",
-    "productsPath": "products",
-    "debugHeaders": true,
-    "httpClientDebug": true,
-    "debugErrorsResponse": true,
-    "ignoreLogUrls": ["metrics"]
-  },
   "logOptions": {
     "level": "debug",
     "logType": 0,
     "callerEnabled": false
   },
-  "gormOptions": {
+  "echoHttpOptions": {
+    "port": ":7000",
+    "readTimeout": "30s",
+    "writeTimeout": "30s",
+    "maxHeaderBytes": 1048576,
+    "bodyLimit": "2M",
+    "enableGzip": true,
+    "enableRateLimit": true,
+    "development": true,
+    "basePath": "/api",
+    "host": "localhost",
+    "name": "catalog_service"
+  },
+  "gorm": {
     "host": "localhost",
     "port": 5432,
     "user": "postgres",
-    "password": "postgres",
+    "password": "1234",
     "dbName": "catalogs_write_service",
     "sslMode": false
   },
