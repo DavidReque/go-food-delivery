@@ -36,7 +36,7 @@ func NewSearchProductsWithValidation(searchText string, query *utils.ListQuery) 
 
 // Validate valida la consulta para buscar productos
 func (p *SearchProducts) Validate() error {
-	err := validation.ValidateStruct(p, validation.Field(&p.SearchText, validation.Required))
+	err := validation.ValidateStruct(p)
 	if err != nil {
 		return customErrors.NewValidationErrorWrap(err, "validation error")
 	}

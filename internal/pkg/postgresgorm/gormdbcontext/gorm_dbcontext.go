@@ -6,6 +6,7 @@ import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger/defaultlogger"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/postgresgorm/contracts"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/postgresgorm/helpers/gormextensions"
+
 	"gorm.io/gorm"
 )
 
