@@ -3,7 +3,6 @@ package v1
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core/cqrs"
 	customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
@@ -100,7 +99,7 @@ func (c *updateProductHandler) Handle(
 	productUpdated := integrationevents.NewProductUpdatedV1(productDto)
 
 	// Publicar el evento de actualización de un producto
-	err = c.RabbitmqProducer.PublishMessage(ctx, productUpdated, nil)
+	err = c.RabbitmqProducer.PublishMessage(ctx, productUpdated)
 	if err != nil {
 		return nil, customErrors.NewApplicationErrorWrap(
 			err,

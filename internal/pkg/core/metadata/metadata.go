@@ -56,12 +56,28 @@ func MetadataToMap(meta Metadata) map[string]interface{} {
 
 // GetString obtiene el valor de una clave específica en los metadatos
 func (m Metadata) GetString(key string) string {
-	return m[key].(string)
+	val, exists := m[key]
+	if !exists || val == nil {
+		return ""
+	}
+	str, ok := val.(string)
+	if !ok {
+		return ""
+	}
+	return str
 }
 
 // GetTime obtiene el valor de una clave específica en los metadatos
 func (m Metadata) GetTime(key string) time.Time {
-	return m[key].(time.Time)
+	val, exists := m[key]
+	if !exists || val == nil {
+		return time.Time{}
+	}
+	timeVal, ok := val.(time.Time)
+	if !ok {
+		return time.Time{}
+	}
+	return timeVal
 }
 
 // ToJson convierte los metadatos a un JSON
@@ -71,6 +87,11 @@ func (m Metadata) ToJson() string {
 		return ""
 	}
 	return string(json)
+}
+
+// New creates a new empty Metadata instance
+func New() Metadata {
+	return make(Metadata)
 }
 
 // FromMetadata devuelve un tipo Metadata a partir de un tipo Metadata

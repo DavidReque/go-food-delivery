@@ -317,12 +317,12 @@ func (r *rabbitmqBus) Stop() error {
 func (r *rabbitmqBus) PublishMessage(
 	ctx context.Context,
 	message types.IMessage,
-	meta metadata.Metadata,
+	//meta metadata.Metadata,
 ) error {
 	if r.producer == nil {
 		r.logger.Fatal("can't find a producer for publishing messages")
 	}
-	return r.producer.PublishMessage(ctx, message, meta)
+	return r.producer.PublishMessage(ctx, message)
 }
 
 func (r *rabbitmqBus) PublishMessageWithTopicName(

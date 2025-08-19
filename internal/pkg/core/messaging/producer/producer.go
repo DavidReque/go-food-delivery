@@ -10,7 +10,7 @@ import (
 // Producer es una interfaz que define los métodos para publicar mensajes en un sistema de mensajería
 type Producer interface {
 	// PublishMessage publica un mensaje en el sistema de mensajería
-	PublishMessage(ctx context.Context, message types.IMessage, metadata metadata.Metadata) error
+	PublishMessage(ctx context.Context, message types.IMessage/*metadata metadata.Metadata*/) error
 	// PublishMessageWithTopicName publica un mensaje en el sistema de mensajería con un nombre de tema específico
 	PublishMessageWithTopicName(
 		ctx context.Context,

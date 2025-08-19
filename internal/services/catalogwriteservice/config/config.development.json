@@ -47,7 +47,7 @@
     }
   },
   "tracingOptions": {
-    "enable": true,
+    "enable": false,
     "serviceName": "catalogs-write-service",
     "instrumentationName": "io.opentelemetry.traces.catalogs-write-service",
     "id": 1,
@@ -55,11 +55,11 @@
     "alwaysOnSampler": true,
     "jaegerExporterOptions": {
       "otlpEndpoint": "localhost:4320",
-      "enabled": true
+      "enabled": false
     },
     "tempoExporterOptions": {
       "otlpEndpoint": "localhost:4322",
-      "enabled": true
+      "enabled": false
     },
     "zipkinExporterOptions": {
       "url": "http://localhost:9411/api/v2/spans"

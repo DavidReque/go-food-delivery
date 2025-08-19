@@ -62,9 +62,9 @@ func (r *rabbitMQProducer) IsProduced(h func(message types2.IMessage)) {
 func (r *rabbitMQProducer) PublishMessage(
 	ctx context.Context,
 	message types2.IMessage,
-	meta metadata.Metadata,
+	//meta metadata.Metadata,
 ) error {
-	return r.PublishMessageWithTopicName(ctx, message, meta, "")
+	return r.PublishMessageWithTopicName(ctx, message, nil, "")
 }
 
 // getProducerConfigurationByMessage is a method that returns the producer configuration for a given message
@@ -225,24 +225,27 @@ func (r *rabbitMQProducer) getMetadata(
 	message types2.IMessage,
 	meta metadata.Metadata,
 ) metadata.Metadata {
-	meta = metadata.FromMetadata(meta)
+	// Always create new metadata if nil to avoid panics
+	if meta == nil {
+		meta = metadata.New()
+	} else {
+		meta = metadata.FromMetadata(meta)
+	}
 
 	// just message type name not full type name because in other side package name for type could be different
 	messageHeader.SetMessageType(meta, message.GetMessageTypeName())
 	messageHeader.SetMessageContentType(meta, r.messageSerializer.ContentType())
 
-	if messageHeader.GetMessageId(meta) == "" {
-		messageHeader.SetMessageId(meta, message.GeMessageId())
-	}
+	// Always set message ID from the message itself
+	messageHeader.SetMessageId(meta, message.GeMessageId())
 
-	if messageHeader.GetMessageCreated(meta) == *new(time.Time) {
-		messageHeader.SetMessageCreated(meta, message.GetCreated())
-	}
+	// Always set message created time
+	messageHeader.SetMessageCreated(meta, message.GetCreated())
 
-	if messageHeader.GetCorrelationId(meta) == "" {
-		cid := uuid.NewV4().String()
-		messageHeader.SetCorrelationId(meta, cid)
-	}
+	// Always generate a new correlation ID
+	cid := uuid.NewV4().String()
+	messageHeader.SetCorrelationId(meta, cid)
+	
 	messageHeader.SetMessageName(meta, utils.GetMessageName(message))
 
 	return meta
