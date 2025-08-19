@@ -5,9 +5,8 @@ import (
 	"fmt"
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core/cqrs"
-	customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
+	//customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
-	"github.com/DavidReque/go-food-delivery/internal/pkg/mapper"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/postgresgorm/gormdbcontext"
 	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/products/data/datamodels"
 	dtosv1 "github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/products/dtos/v1"
@@ -57,33 +56,51 @@ func (c *createProductHandler) Handle(
 	}
 
 	// Map the product to a ProductDto
-	productDto, err := mapper.Map[*dtosv1.ProductDto](result)
-	if err != nil {
-		return nil, customErrors.NewApplicationError(
-			err,
-			"error in the mapping ProductDto",
-		)
+	// TEMPORARILY DISABLED: mapper issue
+	// productDto, err := mapper.Map[*dtosv1.ProductDto](result)
+	// if err != nil {
+	// 	return nil, customErrors.NewApplicationError(
+	// 		err,
+	// 		"error in the mapping ProductDto",
+	// 	)
+	// }
+	
+	// Manual mapping as workaround
+	productDto := &dtosv1.ProductDto{
+		Id:          result.Id,
+		Name:        result.Name,
+		Description: result.Description,
+		Price:       result.Price,
+		CreatedAt:   result.CreatedAt,
+		UpdatedAt:   result.UpdatedAt,
 	}
 
 	// Create the product creation event
 	productCreated := integrationevents.NewProductCreatedV1(productDto)
 
-	// Publish the product creation event
-	err = c.RabbitmqProducer.PublishMessage(ctx, productCreated, nil)
+	// Publish the product creation event to RabbitMQ
+	err = c.RabbitmqProducer.PublishMessage(ctx, productCreated)
 	if err != nil {
-		return nil, customErrors.NewApplicationErrorWrap(
-			err,
-			"error in publishing ProductCreated integration_events event",
+		c.Log.Errorw(
+			fmt.Sprintf("error in publishing ProductCreated integration_events event: %v", err),
+			logger.Fields{"ProductId": productCreated.Id},
+		)
+		// Log error but don't fail the request - this follows the pattern from the reference repo
+		// The product was successfully created, event publishing is secondary
+	} else {
+		c.Log.Infow(
+			fmt.Sprintf("ProductCreated message with messageId `%s` published to the rabbitmq broker", productCreated.MessageId),
+			logger.Fields{"MessageId": productCreated.MessageId},
 		)
 	}
 
 	// Log the product creation
 	c.Log.Infow(
 		fmt.Sprintf(
-			"ProductCreated message with messageId `%s` published to the rabbitmq broker",
-			productCreated.MessageId,
+			"product with id '%s' created",
+			product.Id,
 		),
-		logger.Fields{"MessageId": productCreated.MessageId},
+		logger.Fields{"Id": product.Id, "MessageId": productCreated.MessageId},
 	)
 
 	// Create the product creation result
