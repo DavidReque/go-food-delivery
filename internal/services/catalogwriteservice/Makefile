@@ -31,7 +31,7 @@ lint:
 .PHONY: format
 format:
 	golines -m 120 -w --ignore-generated .
-	gci write --skip-generated -s standard -s "prefix(github.com/mehdihadeli/go-food-delivery-microservices)" -s default -s blank -s dot --custom-order  .
+	gci write --skip-generated -s standard -s "prefix(github.com/DavidReque/go-food-delivery)" -s default -s blank -s dot --custom-order  .
 	gofumpt -l -w .
 
 # ==============================================================================

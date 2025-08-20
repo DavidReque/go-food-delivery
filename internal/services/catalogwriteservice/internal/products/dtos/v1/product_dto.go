@@ -6,7 +6,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-//  Representa datos para transferencia externa (APIs, JSON)
+// Representa datos para transferencia externa (APIs, JSON)
 type ProductDto struct {
 	Id          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`

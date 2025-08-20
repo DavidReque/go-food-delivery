@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core/cqrs"
-	//customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
+	// customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/postgresgorm/gormdbcontext"
 	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/internal/products/data/datamodels"
@@ -64,7 +64,7 @@ func (c *createProductHandler) Handle(
 	// 		"error in the mapping ProductDto",
 	// 	)
 	// }
-	
+
 	// Manual mapping as workaround
 	productDto := &dtosv1.ProductDto{
 		Id:          result.Id,

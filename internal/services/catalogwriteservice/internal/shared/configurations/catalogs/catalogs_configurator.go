@@ -95,7 +95,7 @@ func (ic *CatalogsServiceConfigurator) MapCatalogsEndpoints() error {
 				})
 
 			// config catalogs swagger
-			//ic.configSwagger(catalogsServer.RouteBuilder())
+			// ic.configSwagger(catalogsServer.RouteBuilder())
 
 			return nil
 		},

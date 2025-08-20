@@ -7,7 +7,8 @@ import (
 )
 
 // Product model
-//  Representa datos internos/base de datos
+//
+//	Representa datos internos/base de datos
 type Product struct {
 	Id          uuid.UUID
 	Name        string

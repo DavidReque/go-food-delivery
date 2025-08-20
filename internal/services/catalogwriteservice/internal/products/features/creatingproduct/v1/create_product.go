@@ -72,7 +72,6 @@ func (c *CreateProduct) Validate() error {
 		),
 		validation.Field(&c.CreatedAt, validation.Required),
 	)
-
 	if err != nil {
 		return customErrors.NewValidationErrorWrap(err, "failed to validate CreateProduct command")
 	}

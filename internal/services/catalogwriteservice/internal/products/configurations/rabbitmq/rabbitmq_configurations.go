@@ -18,9 +18,9 @@ func ConfigProductsRabbitMQ(
 		creatingproductevents.ProductCreatedV1{},
 		func(builder producerConfigurations.RabbitMQProducerConfigurationBuilder) {
 			builder.WithExchangeName("catalog.products.exchange"). // Exchange name
-				WithExchangeType(types.ExchangeTopic). // Exchange type
-				WithRoutingKey("products.created"). // Routing key
-				WithDurable(true) // Durable
+										WithExchangeType(types.ExchangeTopic). // Exchange type
+										WithRoutingKey("products.created").    // Routing key
+										WithDurable(true)                      // Durable
 		},
 	)
 
@@ -29,9 +29,9 @@ func ConfigProductsRabbitMQ(
 		updatingproductevents.ProductUpdatedV1{},
 		func(builder producerConfigurations.RabbitMQProducerConfigurationBuilder) {
 			builder.WithExchangeName("catalog.products.exchange"). // Exchange name
-				WithExchangeType(types.ExchangeTopic). // Exchange type
-				WithRoutingKey("products.updated"). // Routing key
-				WithDurable(true) // Durable
+										WithExchangeType(types.ExchangeTopic). // Exchange type
+										WithRoutingKey("products.updated").    // Routing key
+										WithDurable(true)                      // Durable
 		},
 	)
 
@@ -40,9 +40,9 @@ func ConfigProductsRabbitMQ(
 		deletingproductevents.ProductDeletedV1{},
 		func(builder producerConfigurations.RabbitMQProducerConfigurationBuilder) {
 			builder.WithExchangeName("catalog.products.exchange"). // Exchange name
-				WithExchangeType(types.ExchangeTopic). // Exchange type
-				WithRoutingKey("products.deleted"). // Routing key
-				WithDurable(true) // Durable
+										WithExchangeType(types.ExchangeTopic). // Exchange type
+										WithRoutingKey("products.deleted").    // Routing key
+										WithDurable(true)                      // Durable
 		},
 	)
 }
