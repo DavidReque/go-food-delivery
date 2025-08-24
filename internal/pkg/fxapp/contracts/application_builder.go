@@ -9,6 +9,12 @@ import (
 // ApplicationBuilder es una interfaz que define cómo se construye una aplicación.
 // Proporciona métodos para registrar módulos, dependencias y configurar la aplicación.
 type ApplicationBuilder interface {
+	// AddModule agrega módulos a la aplicación (versión variádica).
+	// Permite agregar múltiples módulos de una vez.
+	// Parámetros:
+	//   - module: Lista variable de opciones de fx que representan módulos
+	AddModule(module ...fx.Option)
+
 	// ProvideModule registra módulos directamente en la aplicación.
 	// Los módulos son conjuntos de funcionalidades que se pueden agregar de forma independiente.
 	// Parámetros:
@@ -37,6 +43,10 @@ type ApplicationBuilder interface {
 	// GetProvides devuelve la lista de todos los constructores registrados.
 	// Útil para inspeccionar qué servicios están configurados en la aplicación.
 	GetProvides() []interface{}
+
+	// GetInvokes devuelve la lista de todos los invokes registrados.
+	// Permite verificar qué funciones se ejecutarán al iniciar la aplicación.
+	GetInvokes() []interface{}
 
 	// GetDecorates devuelve la lista de todos los decoradores registrados.
 	// Permite verificar qué modificaciones se aplicarán a los servicios.

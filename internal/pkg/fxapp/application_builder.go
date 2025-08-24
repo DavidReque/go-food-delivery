@@ -18,6 +18,8 @@ type applicationBuilder struct {
 	decorates []interface{}
 	// módulos FX completos que también se añadirán.
 	options     []fx.Option
+	// invokes que se ejecutarán
+	invokes     []interface{}
 	logger      logger.Logger
 	environment environment.Environment
 }
@@ -33,6 +35,11 @@ func NewApplicationBuilder(environments ...environment.Environment) contracts.Ap
 	logger = zap.NewZapLogger(logoption, env)
 
 	return &applicationBuilder{logger: logger, environment: env}
+}
+
+// AddModule agrega un módulo a la aplicación
+func (a *applicationBuilder) AddModule(module ...fx.Option) {
+	a.options = append(a.options, module...)
 }
 
 // ProvideModule agrega un módulo a la aplicación
@@ -52,14 +59,17 @@ func (a *applicationBuilder) Decorate(constructors ...interface{}) {
 
 // Build construye la aplicación
 func (a *applicationBuilder) Build() contracts.Application {
-	invokes := make([]interface{}, 0)
-	app := NewApplication(a.provides, a.decorates, invokes, a.options, a.logger, a.environment)
+	app := NewApplication(a.provides, a.decorates, a.invokes, a.options, a.logger, a.environment)
 	return app
 }
 
 // GetProvides devuelve los constructores proporcionados
 func (a *applicationBuilder) GetProvides() []interface{} {
 	return a.provides
+}
+
+func (a *applicationBuilder) GetInvokes() []interface{} {
+	return a.invokes
 }
 
 // GetDecorates devuelve los decoradores
