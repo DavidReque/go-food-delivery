@@ -26,43 +26,59 @@ const (
 
 // NewMongoDB Create new MongoDB client
 func NewMongoDB(cfg *MongoDbOptions) (*mongo.Client, error) {
-	// create the uri address
-	uriAddress := fmt.Sprintf(
-		"mongodb://%s:%s@%s:%d",
-		cfg.User,
-		cfg.Password,
-		cfg.Host,
-		cfg.Port,
-	)
-	// create the options
-	opt := options.Client().ApplyURI(uriAddress).
+
+	// Apply default values if empty (temporary configuration problem)
+	if cfg.Host == "" && !cfg.UseAtlas {
+		cfg.Host = "localhost"
+	}
+	if cfg.Port == 0 {
+		cfg.Port = 27017
+	}
+	if cfg.Database == "" {
+		cfg.Database = "catalogs_read_service"
+	}
+
+	var uriAddress string
+
+	// First check if Atlas should be used
+	if cfg.UseAtlas {
+		if cfg.AtlasURI == "" {
+			return nil, fmt.Errorf("MongoDB Atlas URI is empty but useAtlas is true")
+		}
+		uriAddress = cfg.AtlasURI
+	} else {
+		// Use local configuration
+		if cfg.UseAuth {
+			uriAddress = fmt.Sprintf("mongodb://%s:%s@%s:%d", cfg.User, cfg.Password, cfg.Host, cfg.Port)
+		} else {
+			uriAddress = fmt.Sprintf("mongodb://%s:%d", cfg.Host, cfg.Port)
+		}
+	}
+
+	opt := options.Client().
+		ApplyURI(uriAddress).
 		SetConnectTimeout(connectTimeout).
 		SetMaxConnIdleTime(maxConnIdleTime).
 		SetMinPoolSize(minPoolSize).
 		SetMaxPoolSize(maxPoolSize)
 
-	// if use auth, set the auth
-	if cfg.UseAuth {
-		opt = opt.SetAuth(
-			options.Credential{Username: cfg.User, Password: cfg.Password},
-		)
-	}
-
-	ctx := context.Background()
-	client, err := mongo.Connect(ctx, opt)
-	if err != nil {
-		return nil, err
-	}
-
-	// if enable tracing, add tracing
 	if cfg.EnableTracing {
 		opt.Monitor = otelmongo.NewMonitor()
 	}
 
-	// setup  https://github.com/Kamva/mgm
-	err = mgm.SetDefaultConfig(nil, cfg.Database, opt)
+	client, err := mongo.Connect(context.Background(), opt)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to connect to mongo: %w", err)
+	}
+
+	if err = client.Ping(context.Background(), nil); err != nil {
+		return nil, fmt.Errorf("failed to ping mongo: %w", err)
+	}
+
+	// setup  https://github.com/Kamva/mgm
+	// This will fail if cfg.Database is empty, providing a more accurate error source.
+	if err = mgm.SetDefaultConfig(nil, cfg.Database, opt); err != nil {
+		return nil, fmt.Errorf("failed to set mgm default config: %w", err)
 	}
 
 	return client, nil
