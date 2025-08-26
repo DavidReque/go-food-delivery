@@ -39,5 +39,12 @@ go.work
 # Local History for Visual Studio Code
 .history/
 
+# Local .env file
+.env
+
 # Built Visual Studio Code Extensions
 *.vsix
+
+
+# Local config file
+config.development.local.json
