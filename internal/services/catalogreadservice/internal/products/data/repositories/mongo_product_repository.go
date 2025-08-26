@@ -96,13 +96,28 @@ func (p *mongoProductRepository) SearchProducts(
 	span.SetAttributes(attribute2.String("SearchText", searchText))
 	defer span.End()
 
+	p.log.Infow("Starting SearchProducts", logger.Fields{
+		"SearchText": searchText,
+		"ListQuery":  listQuery,
+	})
+
+	// Use the Search method for proper search functionality
+	p.log.Infow("Calling Search method", logger.Fields{
+		"SearchText": searchText,
+		"ListQuery":  listQuery,
+	})
+	
 	result, err := p.mongoGenericRepository.Search(ctx, searchText, listQuery)
 	if err != nil {
+		p.log.Errorw("Error in SearchProducts", logger.Fields{
+			"Error":      err,
+			"SearchText": searchText,
+		})
 		return nil, utils2.TraceErrStatusFromSpan(
 			span,
 			errors.WrapIf(
 				err,
-				"error in the paginate",
+				"error in SearchProducts",
 			),
 		)
 	}

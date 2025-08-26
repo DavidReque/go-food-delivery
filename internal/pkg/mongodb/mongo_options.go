@@ -1,8 +1,6 @@
 package mongodb
 
 import (
-	"fmt"
-
 	"github.com/DavidReque/go-food-delivery/internal/pkg/config"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
 )

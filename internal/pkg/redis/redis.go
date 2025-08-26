@@ -22,8 +22,9 @@ const (
 func NewRedisClient(cfg *RedisOptions) *redis.Client {
 	universalClient := redis.NewClient(&redis.Options{
 		Addr:            fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
-		Password:        cfg.Password, // no password set
-		DB:              cfg.Database, // use defaultLogger Database
+		Username:        cfg.Username, // Redis Cloud username
+		Password:        cfg.Password, // Redis Cloud password
+		DB:              cfg.Database, // use default database
 		MaxRetries:      maxRetries,
 		MinRetryBackoff: minRetryBackoff,
 		MaxRetryBackoff: maxRetryBackoff,

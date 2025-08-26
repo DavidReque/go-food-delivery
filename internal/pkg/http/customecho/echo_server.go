@@ -74,8 +74,8 @@ func (s *echoHttpServer) SetupDefaultMiddlewares() {
 	// Recuperación de pánico
 	s.echo.Use(middleware.Recover())
 
-	// Logger
-	s.echo.Use(middleware.Logger())
+	// Logger - disabled temporarily 
+	// s.echo.Use(middleware.Logger())
 
 	// CORS
 	s.echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
