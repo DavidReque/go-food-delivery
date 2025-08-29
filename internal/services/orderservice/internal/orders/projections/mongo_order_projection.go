@@ -1,0 +1,141 @@
+package projections
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/DavidReque/go-food-delivery/internal/pkg/core/messaging/producer"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/es/contracts/projection"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/es/models"
+	customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/mapper"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/otel/tracing"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/otel/tracing/attribute"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/otel/tracing/utils"
+	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/contracts/repositories"
+	dtosV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/dtos/v1"
+	createOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/events/domain_events"
+	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/models/orders/read_models"
+	createOrderIntegrationEventsV1 "github.com/mehdihadeli/go-food-delivery-microservices/internal/services/orderservice/internal/orders/features/creating_order/v1/events/integration_events"
+
+	"emperror.dev/errors"
+	attribute2 "go.opentelemetry.io/otel/attribute"
+)
+
+type mongoOrderProjection struct {
+	mongoOrderRepository repositories.OrderMongoRepository
+	rabbitmqProducer     producer.Producer
+	logger               logger.Logger
+	tracer               tracing.AppTracer
+}
+
+func NewMongoOrderProjection(
+	mongoOrderRepository repositories.OrderMongoRepository,
+	rabbitmqProducer producer.Producer,
+	logger logger.Logger,
+	tracer tracing.AppTracer,
+) projection.IProjection {
+	return &mongoOrderProjection{
+		mongoOrderRepository: mongoOrderRepository,
+		rabbitmqProducer:     rabbitmqProducer,
+		logger:               logger,
+		tracer:               tracer,
+	}
+}
+
+func (m mongoOrderProjection) ProcessEvent(
+	ctx context.Context,
+	streamEvent *models.StreamEvent,
+) error {
+	// Handling and projecting event to elastic read model
+	switch evt := streamEvent.Event.(type) {
+	case *createOrderDomainEventsV1.OrderCreatedV1:
+		return m.onOrderCreated(ctx, evt)
+	}
+
+	return nil
+}
+
+func (m *mongoOrderProjection) onOrderCreated(
+	ctx context.Context,
+	evt *createOrderDomainEventsV1.OrderCreatedV1,
+) error {
+	ctx, span := m.tracer.Start(ctx, "mongoOrderProjection.onOrderCreated")
+	span.SetAttributes(attribute.Object("Event", evt))
+	span.SetAttributes(attribute2.String("OrderId", evt.OrderId.String()))
+	defer span.End()
+
+	// Map shop items to read model
+	items, err := mapper.Map[[]*read_models.ShopItemReadModel](evt.ShopItems)
+	if err != nil {
+		return errors.WrapIf(
+			err,
+			"[mongoOrderProjection_onOrderCreated.Map] error in mapping shopItems",
+		)
+	}
+
+	// Create order read model
+	orderRead := read_models.NewOrderReadModel(
+		evt.OrderId,
+		items,
+		evt.AccountEmail,
+		evt.DeliveryAddress,
+		evt.DeliveredTime,
+	)
+	// Save order read model to MongoDB
+	_, err = m.mongoOrderRepository.CreateOrder(ctx, orderRead)
+	if err != nil {
+		return utils.TraceStatusFromSpan(
+			span,
+			errors.WrapIf(
+				err,
+				"[mongoOrderProjection_onOrderCreated.CreateOrder] error in creating order with mongoOrderRepository",
+			),
+		)
+	}
+
+	// Map order read model to DTO
+	orderReadDto, err := mapper.Map[*dtosV1.OrderReadDto](orderRead)
+	if err != nil {
+		return utils.TraceErrStatusFromSpan(
+			span,
+			customErrors.NewApplicationErrorWrap(
+				err,
+				"[mongoOrderProjection_onOrderCreated.Map] error in mapping OrderReadDto",
+			),
+		)
+	}
+
+	// Create order created event
+	orderCreatedEvent := createOrderIntegrationEventsV1.NewOrderCreatedV1(orderReadDto)
+
+	err = m.rabbitmqProducer.PublishMessage(ctx, orderCreatedEvent)
+	if err != nil {
+		return utils.TraceErrStatusFromSpan(
+			span,
+			customErrors.NewApplicationErrorWrap(
+				err,
+				"[mongoOrderProjection_onOrderCreated.PublishMessage] error in publishing OrderCreated integration_events event",
+			),
+		)
+	}
+
+	m.logger.Infow(
+		fmt.Sprintf(
+			"[mongoOrderProjection.onOrderCreated] OrderCreated message with messageId `%s` published to the rabbitmq broker",
+			orderCreatedEvent.MessageId,
+		),
+		logger.Fields{"MessageId": orderCreatedEvent.MessageId, "Id": orderCreatedEvent.OrderId},
+	)
+
+	m.logger.Infow(
+		fmt.Sprintf(
+			"[mongoOrderProjection.onOrderCreated] order with id '%s' created",
+			orderCreatedEvent.Id,
+		),
+		logger.Fields{"Id": orderRead.Id, "MessageId": orderCreatedEvent.MessageId},
+	)
+
+	return nil
+}

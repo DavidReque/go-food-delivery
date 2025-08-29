@@ -7,10 +7,11 @@ import (
 	"github.com/google/uuid"
 )
 
+
 type StreamEvent struct {
-	EventID  uuid.UUID
-	Version  int64
-	Position int64
-	Event    domain.IDomainEvent
-	Metadata metadata.Metadata
+	EventID  uuid.UUID // Unique identifier for the event
+	Version  int64     // Version of the event
+	Position int64     // Position of the event in the stream
+	Event    domain.IDomainEvent // The actual event
+	Metadata metadata.Metadata // Metadata associated with the event
 }
