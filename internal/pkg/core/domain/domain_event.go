@@ -41,7 +41,7 @@ func (d *DomainEvent) GetAggregateSequenceNumber() int64 {
 func (d *DomainEvent) WithAggregate(
 	aggregateId uuid.UUID,
 	aggregateSequenceNumber int64,
-) *DomainEvent {
+) IDomainEvent {
 	d.AggregateId = aggregateId
 	d.AggregateSequenceNumber = aggregateSequenceNumber
 

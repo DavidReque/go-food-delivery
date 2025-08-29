@@ -9,7 +9,7 @@ import (
 
 type IEvent interface {
 	GetEventId() uuid.UUID
-	GetOcurredOn() time.Time
+	GetOccurredOn() time.Time
 	GetEventTypeName() string
 	GetEventFullTypeName() string
 }
@@ -17,7 +17,7 @@ type IEvent interface {
 type Event struct {
 	EventId    uuid.UUID `json:"event_id"`
 	EventType  string    `json:"event_type"`
-	OccurredOn time.Time `json:"ocurred_on"`
+	OccurredOn time.Time `json:"occurred_on"`
 }
 
 func NewEvent(eventType string) *Event {
