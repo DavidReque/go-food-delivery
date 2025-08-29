@@ -16,10 +16,11 @@ import (
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/contracts/repositories"
 	dtosV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/dtos/v1"
 	createOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/events/domain_events"
+	createOrderIntegrationEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/events/integration_events"
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/models/orders/read_models"
-	createOrderIntegrationEventsV1 "github.com/mehdihadeli/go-food-delivery-microservices/internal/services/orderservice/internal/orders/features/creating_order/v1/events/integration_events"
 
 	"emperror.dev/errors"
+	uuid "github.com/satori/go.uuid"
 	attribute2 "go.opentelemetry.io/otel/attribute"
 )
 
@@ -77,7 +78,7 @@ func (m *mongoOrderProjection) onOrderCreated(
 
 	// Create order read model
 	orderRead := read_models.NewOrderReadModel(
-		evt.OrderId,
+		uuid.UUID(evt.OrderId),
 		items,
 		evt.AccountEmail,
 		evt.DeliveryAddress,
@@ -138,4 +139,13 @@ func (m *mongoOrderProjection) onOrderCreated(
 	)
 
 	return nil
+}
+
+// convertGoogleUUIDToSatoriUUID converts github.com/google/uuid.UUID to github.com/satori/go.uuid.UUID
+func convertGoogleUUIDToSatoriUUID(id uuid.UUID) uuid.UUID {
+	u, err := uuid.FromBytes(id[:])
+	if err != nil {
+		return uuid.UUID{}
+	}
+	return u
 }

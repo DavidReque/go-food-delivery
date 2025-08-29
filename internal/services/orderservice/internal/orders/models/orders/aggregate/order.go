@@ -14,11 +14,12 @@ import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/reflection/typemapper"
 	dtosV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/dtos/v1"
 	domainExceptions "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/exceptions/domain_exceptions"
-	updateOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/events/domain_events"
-	createOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/updating_shopping_card/v1/events"
+	createOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/events/domain_events"
+	updateOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/updating_shopping_card/v1/events"
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/models/orders/value_objects"
 
-	uuid "github.com/satori/go.uuid"
+	"github.com/google/uuid"
+	satoriUUID "github.com/satori/go.uuid"
 )
 
 type Order struct {
@@ -54,8 +55,8 @@ func NewOrder(
 	createdAt time.Time,
 ) (*Order, error) {
 	order := &Order{}
-	order.NewEmptyAggregate()
-	order.SetId(id)
+	order.SetId(convertGoogleUUIDToSatoriUUID(id))
+	//order.SetId(id)
 
 	if shopItems == nil || len(shopItems) == 0 {
 		return nil, domainExceptions.NewOrderShopItemsRequiredError(
@@ -95,9 +96,18 @@ func NewOrder(
 			"[Order_NewOrder.Apply] error in applying created event",
 		)
 	}
-
 	return order, nil
 }
+
+// convertGoogleUUIDToSatoriUUID converts github.com/google/uuid.UUID to github.com/satori/go.uuid.UUID
+func convertGoogleUUIDToSatoriUUID(id uuid.UUID) satoriUUID.UUID {
+	u, err := satoriUUID.FromBytes(id[:])
+	if err != nil {
+		return satoriUUID.UUID{}
+	}
+	return u
+}
+
 
 func (o *Order) UpdateShoppingCard(shopItems []*value_objects.ShopItem) error {
 	event, err := updateOrderDomainEventsV1.NewShoppingCartUpdatedV1(shopItems)
@@ -118,6 +128,8 @@ func (o *Order) When(event domain.IDomainEvent) error {
 
 	case *createOrderDomainEventsV1.OrderCreatedV1:
 		return o.onOrderCreated(evt)
+	case *updateOrderDomainEventsV1.ShoppingCartUpdatedV1:
+		return o.onShoppingCartUpdated(evt)
 
 	default:
 		return errors.InvalidEventTypeError
@@ -136,6 +148,18 @@ func (o *Order) onOrderCreated(evt *createOrderDomainEventsV1.OrderCreatedV1) er
 	o.deliveredTime = evt.DeliveredTime
 	o.createdAt = evt.CreatedAt
 	o.SetId(evt.GetAggregateId()) // o.SetId(evt.Id)
+
+	return nil
+}
+
+func (o *Order) onShoppingCartUpdated(evt *updateOrderDomainEventsV1.ShoppingCartUpdatedV1) error {
+	items, err := mapper.Map[[]*value_objects.ShopItem](evt.ShopItems)
+	if err != nil {
+		return err
+	}
+
+	o.shopItems = items
+	o.updatedAt = time.Now()
 
 	return nil
 }
