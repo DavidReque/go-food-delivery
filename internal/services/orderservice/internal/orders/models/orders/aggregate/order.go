@@ -56,7 +56,7 @@ func NewOrder(
 ) (*Order, error) {
 	order := &Order{}
 	order.SetId(convertGoogleUUIDToSatoriUUID(id))
-	//order.SetId(id)
+	// order.SetId(id)
 
 	if shopItems == nil || len(shopItems) == 0 {
 		return nil, domainExceptions.NewOrderShopItemsRequiredError(
@@ -107,7 +107,6 @@ func convertGoogleUUIDToSatoriUUID(id uuid.UUID) satoriUUID.UUID {
 	}
 	return u
 }
-
 
 func (o *Order) UpdateShoppingCard(shopItems []*value_objects.ShopItem) error {
 	event, err := updateOrderDomainEventsV1.NewShoppingCartUpdatedV1(shopItems)

@@ -1,0 +1,78 @@
+package queries
+
+import (
+	"context"
+	"fmt"
+
+	customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/mapper"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/otel/tracing"
+	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/contracts/repositories"
+	dtosV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/dtos/v1"
+	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/getting_order_by_id/v1/dtos"
+)
+
+type GetOrderByIdHandler struct {
+	log                  logger.Logger
+	orderMongoRepository repositories.OrderMongoRepository
+	tracer               tracing.AppTracer
+}
+
+func NewGetOrderByIdHandler(
+	log logger.Logger,
+	orderMongoRepository repositories.OrderMongoRepository,
+	tracer tracing.AppTracer,
+) *GetOrderByIdHandler {
+	return &GetOrderByIdHandler{
+		log:                  log,
+		orderMongoRepository: orderMongoRepository,
+		tracer:               tracer,
+	}
+}
+
+func (q *GetOrderByIdHandler) Handle(
+	ctx context.Context,
+	query *GetOrderById,
+) (*dtos.GetOrderByIdResponseDto, error) {
+	// get order by order-read id
+	order, err := q.orderMongoRepository.GetOrderById(ctx, query.Id)
+	if err != nil {
+		return nil, customErrors.NewApplicationErrorWrap(
+			err,
+			fmt.Sprintf(
+				"[GetOrderByIdHandler_Handle.GetProductById] error in getting order with id %s in the mongo repository",
+				query.Id.String(),
+			),
+		)
+	}
+
+	if order == nil {
+		// get order by order-write id
+		order, err = q.orderMongoRepository.GetOrderByOrderId(ctx, query.Id)
+		if err != nil {
+			return nil, customErrors.NewApplicationErrorWrap(
+				err,
+				fmt.Sprintf(
+					"[GetOrderByIdHandler_Handle.GetProductById] error in getting order with orderId %s in the mongo repository",
+					query.Id.String(),
+				),
+			)
+		}
+	}
+
+	orderDto, err := mapper.Map[*dtosV1.OrderReadDto](order)
+	if err != nil {
+		return nil, customErrors.NewApplicationErrorWrap(
+			err,
+			"[GetOrderByIdHandler_Handle.Map] error in the mapping order",
+		)
+	}
+
+	q.log.Infow(
+		fmt.Sprintf("[GetOrderByIdHandler.Handle] order with id: {%s} fetched", query.Id.String()),
+		logger.Fields{"Id": query.Id},
+	)
+
+	return &dtos.GetOrderByIdResponseDto{Order: orderDto}, nil
+}
