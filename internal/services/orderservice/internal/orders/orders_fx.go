@@ -3,6 +3,7 @@ package orders
 import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core/web/route"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/es"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/eventstroredb"
 	echocontracts "github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/contracts"
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/data/repositories"
 	createOrderV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/endpoints"
