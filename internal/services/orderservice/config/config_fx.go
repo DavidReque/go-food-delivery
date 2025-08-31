@@ -1,6 +1,11 @@
 package config
 
-import "go.uber.org/fx"
+import (
+	"github.com/DavidReque/go-food-delivery/internal/pkg/config/environment"
+
+	"github.com/spf13/viper"
+	"go.uber.org/fx"
+)
 
 // Module provided to fxlog
 // https://uber-go.github.io/fx/modules.html
@@ -11,4 +16,17 @@ var Module = fx.Module("appconfigfx",
 	fx.Provide(
 		NewConfig,
 	),
+	fx.Invoke(loadServiceConfig),
 )
+
+func loadServiceConfig(env environment.Environment) error {
+	// Seleccionar archivo según entorno
+	configPath := "config/config.development.json"
+	if env.IsProduction() {
+		configPath = "config/config.production.json"
+	}
+
+	viper.SetConfigFile(configPath)
+	viper.SetConfigType("json")
+	return viper.ReadInConfig()
+}

@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/elasticsearch"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/eventstroredb"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/grpc"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/health"
@@ -27,7 +28,7 @@ var Module = fx.Module(
 	customEcho.Module,
 	grpc.Module,
 	mongodb.Module,
-	// elasticsearch.Module,
+	elasticsearch.Module,
 	eventstroredb.ModuleFunc(
 		func(params params.OrderProjectionParams) eventstroredb.ProjectionBuilderFuc {
 			return func(builder eventstroredb.ProjectionsBuilder) {
