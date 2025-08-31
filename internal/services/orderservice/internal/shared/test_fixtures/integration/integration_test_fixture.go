@@ -123,7 +123,9 @@ func (i *IntegrationTestSharedFixture) cleanupRabbitmqData() error {
 			i.rabbitmqOptions.RabbitmqHostOptions.VirtualHost,
 			queue.Name,
 		)
-		return err
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
