@@ -140,12 +140,3 @@ func (m *mongoOrderProjection) onOrderCreated(
 
 	return nil
 }
-
-// convertGoogleUUIDToSatoriUUID converts github.com/google/uuid.UUID to github.com/satori/go.uuid.UUID
-func convertGoogleUUIDToSatoriUUID(id uuid.UUID) uuid.UUID {
-	u, err := uuid.FromBytes(id[:])
-	if err != nil {
-		return uuid.UUID{}
-	}
-	return u
-}

@@ -12,6 +12,7 @@ import (
 	customErrors "github.com/DavidReque/go-food-delivery/internal/pkg/http/httperrors/customerrors"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/mapper"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/reflection/typemapper"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/utils"
 	dtosV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/dtos/v1"
 	domainExceptions "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/exceptions/domain_exceptions"
 	createOrderDomainEventsV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/events/domain_events"
@@ -19,7 +20,6 @@ import (
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/models/orders/value_objects"
 
 	"github.com/google/uuid"
-	satoriUUID "github.com/satori/go.uuid"
 )
 
 type Order struct {
@@ -55,7 +55,7 @@ func NewOrder(
 	createdAt time.Time,
 ) (*Order, error) {
 	order := &Order{}
-	order.SetId(convertGoogleUUIDToSatoriUUID(id))
+	order.SetId(utils.ConvertGoogleUUIDToSatoriUUID(id))
 	// order.SetId(id)
 
 	if shopItems == nil || len(shopItems) == 0 {
@@ -97,15 +97,6 @@ func NewOrder(
 		)
 	}
 	return order, nil
-}
-
-// convertGoogleUUIDToSatoriUUID converts github.com/google/uuid.UUID to github.com/satori/go.uuid.UUID
-func convertGoogleUUIDToSatoriUUID(id uuid.UUID) satoriUUID.UUID {
-	u, err := satoriUUID.FromBytes(id[:])
-	if err != nil {
-		return satoriUUID.UUID{}
-	}
-	return u
 }
 
 func (o *Order) UpdateShoppingCard(shopItems []*value_objects.ShopItem) error {

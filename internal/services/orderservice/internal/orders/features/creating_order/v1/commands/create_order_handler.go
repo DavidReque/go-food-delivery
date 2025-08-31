@@ -9,11 +9,10 @@ import (
 	"github.com/DavidReque/go-food-delivery/internal/pkg/logger"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/mapper"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/otel/tracing"
+	"github.com/DavidReque/go-food-delivery/internal/pkg/utils"
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/features/creating_order/v1/dtos"
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/models/orders/aggregate"
 	"github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/models/orders/value_objects"
-	"github.com/google/uuid"
-	satoriUUID "github.com/satori/go.uuid"
 )
 
 type CreateOrderHandler struct {
@@ -45,7 +44,7 @@ func (c *CreateOrderHandler) Handle(
 	}
 
 	order, err := aggregate.NewOrder(
-		convertSatoriUUIDToGoogleUUID(command.OrderId),
+		utils.ConvertSatoriUUIDToGoogleUUID(command.OrderId),
 		shopItems,
 		command.AccountEmail,
 		command.DeliveryAddress,
@@ -75,13 +74,4 @@ func (c *CreateOrderHandler) Handle(
 	)
 
 	return response, nil
-}
-
-// convertSatoriUUIDToGoogleUUID converts github.com/satori/go.uuid.UUID to github.com/google/uuid.UUID
-func convertSatoriUUIDToGoogleUUID(id satoriUUID.UUID) uuid.UUID {
-	u, err := uuid.FromBytes(id[:])
-	if err != nil {
-		return uuid.Nil
-	}
-	return u
 }
