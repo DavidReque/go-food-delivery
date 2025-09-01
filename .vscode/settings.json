@@ -1,0 +1,123 @@
+{
+  // Go configuration
+  "go.useLanguageServer": true,
+  "go.toolsManagement.checkForUpdates": "local",
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "go.formatTool": "goimports",
+  "go.formatFlags": ["-local", "github.com/DavidReque/go-food-delivery"],
+  "go.testFlags": ["-v", "-race"],
+  "go.coverOnSave": true,
+  "go.coverOnTestPackage": true,
+  "go.buildOnSave": "package",
+  "go.vetOnSave": "package",
+  "go.lintOnSave": "package",
+
+  // Automatic formatting
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+
+  // Specific configuration for Go files
+  "[go]": {
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // Configuration for mod files
+  "[go.mod]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // Configuration for JSON files
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
+
+  // Configuration for YAML files (for docker-compose, k8s, etc.)
+  "[yaml]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
+
+  // Configuration for Protobuf
+  "[proto]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true
+  },
+
+  // Configuration for files
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+
+  // Exclusions for better performance
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/tmp": true,
+    "**/*.exe": true,
+    "**/vendor": true,
+    "**/.vscode": false
+  },
+
+  // Configuration for search
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/vendor": true,
+    "**/tmp": true,
+    "**/*.exe": true,
+    "**/coverage.out": true
+  },
+
+  // Configuration for file explorer
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+
+  // Configuration for terminal
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+
+  // Configuration for Git
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+
+  // Configuration for editor
+  "editor.rulers": [80, 120],
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 120,
+  "editor.minimap.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+
+  // Configuration for Docker
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+
+  // Configuration for Makefile
+  "[makefile]": {
+    "editor.insertSpaces": false,
+    "editor.detectIndentation": false
+  },
+
+  "extensions.ignoreRecommendations": false
+}
