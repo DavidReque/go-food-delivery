@@ -106,7 +106,7 @@ func (p *mongoProductRepository) SearchProducts(
 		"SearchText": searchText,
 		"ListQuery":  listQuery,
 	})
-	
+
 	result, err := p.mongoGenericRepository.Search(ctx, searchText, listQuery)
 	if err != nil {
 		p.log.Errorw("Error in SearchProducts", logger.Fields{

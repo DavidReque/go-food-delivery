@@ -1,8 +1,8 @@
 package endpoints
 
 import (
-	"net/http"
 	"context"
+	"net/http"
 
 	"emperror.dev/errors"
 	"github.com/DavidReque/go-food-delivery/internal/pkg/core/web/route"

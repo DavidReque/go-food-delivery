@@ -20,7 +20,13 @@
     "debugHeaders": true,
     "httpClientDebug": true,
     "debugErrorsResponse": true,
-    "ignoreLogUrls": ["metrics"]
+    "ignoreLogUrls": ["metrics"],
+    "bodyLimit": "10M",
+    "readTimeout": "30s",
+    "writeTimeout": "30s",
+    "maxHeaderBytes": 1048576,
+    "enableGzip": true,
+    "enableRateLimit": true
   },
   "logOptions": {
     "level": "debug",
@@ -32,8 +38,11 @@
     "port": 27017,
     "user": "admin",
     "password": "admin",
-    "database": "orders_service",
-    "useAuth": true
+    "database": "catalogs_read_service",
+    "useAuth": false,
+    "atlasUri": "${MONGODB_ATLAS_URI}",
+    "useAtlas": true,
+    "enableTracing": false
   },
   "rabbitmqOptions": {
     "autoStart": true,
