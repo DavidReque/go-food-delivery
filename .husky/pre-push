@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🐕 Husky: Running pre-push hooks..."
+
+# Run comprehensive tests
+echo "🧪 Running comprehensive tests..."
+go test -v -race -cover ./...
+
+# Run integration tests if available
+if [ -f "docker-compose.test.yml" ]; then
+    echo "🐳 Running integration tests..."
+    docker-compose -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from test
+fi
+
+echo "✅ Pre-push hooks completed successfully!"

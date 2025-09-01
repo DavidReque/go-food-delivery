@@ -43,3 +43,6 @@ go.work.sum
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# node modules
+node_modules

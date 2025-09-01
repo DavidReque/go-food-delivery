@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🐕 Husky: Running pre-commit hooks..."
+
+# Run Go formatting
+echo "🔧 Formatting Go code..."
+go fmt ./...
+
+# Run Go imports organization
+echo "📦 Organizing Go imports..."
+goimports -w .
+
+# Run Go linting
+echo "🧹 Running Go linter..."
+golangci-lint run --fast
+
+# Run Go tests
+echo "🧪 Running Go tests..."
+go test -v ./...
+
+echo "✅ Pre-commit hooks completed successfully!"

@@ -1,0 +1,129 @@
+{
+  "name": "go-food-delivery",
+  "version": "1.0.0",
+  "description": "Development tools for Go Food Delivery Microservices - A comprehensive food delivery platform built with Go, implementing Vertical Slice Architecture, CQRS, Event Sourcing, and microservices patterns",
+  "private": true,
+  "keywords": [
+    "go",
+    "golang",
+    "microservices",
+    "food-delivery",
+    "cqrs",
+    "event-sourcing",
+    "vertical-slice-architecture",
+    "ddd",
+    "event-driven",
+    "rabbitmq",
+    "eventstoredb",
+    "mongodb",
+    "elasticsearch"
+  ],
+  "author": "David Requeno",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DavidReque/go-food-delivery.git"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "commit": "git-cz",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major",
+    "release:patch": "standard-version --release-as patch",
+    "changelog": "standard-version --dry-run",
+    "lint:commits": "commitlint --from HEAD~10 --to HEAD",
+    "validate:commits": "commitlint --from HEAD~50 --to HEAD",
+    "setup:dev": "npm install && npm run prepare",
+    "clean": "rm -rf node_modules package-lock.json"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.6.0",
+    "@commitlint/config-conventional": "^18.6.0",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.0.0",
+    "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog",
+      "defaultScope": "go-food-delivery",
+      "defaultSubject": "update",
+      "defaultBody": "",
+      "defaultIssues": "auto"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "type-enum": [
+        2,
+        "always",
+        [
+          "feat",
+          "fix",
+          "docs",
+          "style",
+          "refactor",
+          "perf",
+          "test",
+          "build",
+          "ci",
+          "chore",
+          "revert",
+          "breaking"
+        ]
+      ],
+      "scope-enum": [
+        2,
+        "always",
+        [
+          "orders",
+          "catalogs",
+          "customers",
+          "payments",
+          "delivery",
+          "auth",
+          "api",
+          "core",
+          "infrastructure",
+          "testing",
+          "docs",
+          "ci",
+          "docker",
+          "k8s",
+          "go-food-delivery"
+        ]
+      ],
+      "subject-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "subject-empty": [
+        2,
+        "never"
+      ],
+      "subject-full-stop": [
+        2,
+        "never",
+        "."
+      ],
+      "header-max-length": [
+        2,
+        "always",
+        72
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    "node >= 18"
+  ]
+}
