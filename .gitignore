@@ -46,3 +46,6 @@ go.work.sum
 
 # node modules
 node_modules
+
+--version
+run
