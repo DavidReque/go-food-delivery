@@ -66,7 +66,7 @@ func (ic *OrdersServiceConfigurator) MapOrdersEndpoints() {
 				})
 
 			// config orders swagger
-			// ic.configSwagger(ordersServer.RouteBuilder())
+			ic.configSwagger(ordersServer.RouteBuilder())
 
 			return nil
 		},

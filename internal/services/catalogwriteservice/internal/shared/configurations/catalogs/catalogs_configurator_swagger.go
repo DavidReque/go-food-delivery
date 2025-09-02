@@ -1,9 +1,8 @@
 package catalogs
 
 import (
-	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/docs"
 	customEcho "github.com/DavidReque/go-food-delivery/internal/pkg/http/customecho/contracts"
-
+	"github.com/DavidReque/go-food-delivery/internal/services/catalogwriteservice/docs"
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
