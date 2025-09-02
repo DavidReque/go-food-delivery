@@ -1,0 +1,50 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Catalogs Write-Service Api for product management with comprehensive endpoints",
+        "title": "Catalogs Write-Service Api",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "David Requeno",
+            "url": "https://github.com/DavidReque",
+            "email": "davidrequeno52@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:7001",
+    "basePath": "/api/v1",
+    "paths": {},
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Enter \"Bearer\" followed by a space and the JWT token",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "Operations about products",
+            "name": "Products"
+        },
+        {
+            "description": "Catalog management operations",
+            "name": "Catalogs"
+        },
+        {
+            "description": "Authentication operations",
+            "name": "Authentication"
+        }
+    ],
+    "x-extension-openapi": {
+        "example": "value on a json level"
+    }
+}

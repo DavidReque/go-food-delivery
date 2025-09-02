@@ -28,6 +28,20 @@ func (ep *createProductEndpoint) MapEndpoint() {
 	ep.ProductsGroup.POST("", ep.handler())
 }
 
+// CreateProduct
+// @Tags Products
+// @Summary Create new product
+// @Description Create a new product with name, description and price
+// @Accept json
+// @Produce json
+// @Param CreateProductRequestDto body dtos.CreateProductRequestDto true "Product data including name, description and price"
+// @Success 201 {object} dtos.CreateProductResponseDto "Product created successfully"
+// @Failure 400 {object} object "Bad request - Invalid product data"
+// @Failure 401 {object} object "Unauthorized - Authentication required"
+// @Failure 422 {object} object "Validation error - Invalid input data"
+// @Failure 500 {object} object "Internal server error - Something went wrong"
+// @Router /api/v1/products [post]
+
 // handler es una función que maneja la solicitud HTTP para crear un producto.
 func (ep *createProductEndpoint) handler() echo.HandlerFunc {
 	// handler es una función que maneja la solicitud HTTP para crear un producto.

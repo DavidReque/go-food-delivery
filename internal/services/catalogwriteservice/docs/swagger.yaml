@@ -1,0 +1,35 @@
+basePath: /api/v1
+host: localhost:7001
+info:
+  contact:
+    email: davidrequeno52@gmail.com
+    name: David Requeno
+    url: https://github.com/DavidReque
+  description: Catalogs Write-Service Api for product management with comprehensive
+    endpoints
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Catalogs Write-Service Api
+  version: "1.0"
+paths: {}
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: Enter "Bearer" followed by a space and the JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
+tags:
+- description: Operations about products
+  name: Products
+- description: Catalog management operations
+  name: Catalogs
+- description: Authentication operations
+  name: Authentication
+x-extension-openapi:
+  example: value on a json level

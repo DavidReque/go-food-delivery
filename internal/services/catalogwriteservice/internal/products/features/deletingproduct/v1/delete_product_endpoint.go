@@ -31,11 +31,15 @@ func (ep *deleteProductEndpoint) MapEndpoint() {
 // DeleteProduct
 // @Tags Products
 // @Summary Delete product
-// @Description Delete existing product
+// @Description Delete existing product by its unique identifier
 // @Accept json
 // @Produce json
-// @Success 204
-// @Param id path string true "Product ID"
+// @Param id path string true "Product ID" format(uuid)
+// @Success 204 "Product deleted successfully"
+// @Failure 400 {object} object "Bad request - Invalid product ID format"
+// @Failure 401 {object} object "Unauthorized - Authentication required"
+// @Failure 404 {object} object "Not found - Product not found"
+// @Failure 500 {object} object "Internal server error - Something went wrong"
 // @Router /api/v1/products/{id} [delete]
 
 // handler handles the delete product command

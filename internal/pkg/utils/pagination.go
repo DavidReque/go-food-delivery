@@ -17,23 +17,42 @@ const (
 	defaultPage = 1
 )
 
-// FilterModel define los criterios de filtrado para las consultas
+// FilterModel define the filtering criteria for queries
+// @Description Model to define filters in queries
 type FilterModel struct {
-	Field      string `query:"field"      json:"field"`
-	Value      string `query:"value"      json:"value"`
+		// @Description Field to filter
+	// @Required
+	Field string `query:"field" json:"field"`
+
+	// @Description Filter value
+	// @Required
+	Value string `query:"value" json:"value"`
+
+	// @Description Comparison operator (eq, ne, gt, lt, gte, lte, contains)
+	// @Required
 	Comparison string `query:"comparison" json:"comparison"`
 }
 
-// ListResult contiene el resultado paginado de una consulta
+// ListResult contains the paginated result of a query
+// @Description Paginated result of a query
 type ListResult[T any] struct {
-	Size       int   `json:"size,omitempty"       bson:"size"`
-	Page       int   `json:"page,omitempty"       bson:"page"`
+		// @Description Current page size
+	Size int `json:"size,omitempty" bson:"size"`
+
+	// @Description Current page number
+	Page int `json:"page,omitempty" bson:"page"`
+
+	// @Description Total available items
 	TotalItems int64 `json:"totalItems,omitempty" bson:"totalItems"`
-	TotalPage  int   `json:"totalPage,omitempty"  bson:"totalPage"`
-	Items      []T   `json:"items,omitempty"      bson:"items"`
+
+	// @Description Total available pages
+	TotalPage int `json:"totalPage,omitempty" bson:"totalPage"`
+
+	// @Description Current page items
+	Items []T `json:"items,omitempty" bson:"items"`
 }
 
-// NewListResult crea una nueva instancia de ListResult con los datos proporcionados
+// NewListResult creates a new instance of ListResult with the provided data
 func NewListResult[T any](items []T, size int, page int, totalItems int64) *ListResult[T] {
 	listResult := &ListResult[T]{
 		Items:      items,
@@ -59,15 +78,28 @@ func getTotalPages(totalCount int64, size int) int {
 	return int(math.Ceil(d))
 }
 
-// ListQuery contiene los parámetros para consultas paginadas
+// ListQuery contains the parameters for paginated queries
+// @Description Parameters for paginated queries
 type ListQuery struct {
-	Size    int            `query:"size"    json:"size,omitempty"`
-	Page    int            `query:"page"    json:"page,omitempty"`
-	OrderBy string         `query:"orderBy" json:"orderBy,omitempty"`
+		// @Description Current page size
+	// @Minimum 1
+	// @Maximum 100
+	// @Default 10
+	Size int `query:"size" json:"size,omitempty"`
+
+	// @Description Current page number
+	// @Minimum 1
+	// @Default 1
+	Page int `query:"page" json:"page,omitempty"`
+
+	// @Description Field to order the results
+	OrderBy string `query:"orderBy" json:"orderBy,omitempty"`
+
+	// @Description Filters applied to the query
 	Filters []*FilterModel `query:"filters" json:"filters,omitempty"`
 }
 
-// NewListQuery crea una nueva instancia de ListQuery
+// NewListQuery creates a new instance of ListQuery
 func NewListQuery(size int, page int) *ListQuery {
 	return &ListQuery{Size: size, Page: page}
 }

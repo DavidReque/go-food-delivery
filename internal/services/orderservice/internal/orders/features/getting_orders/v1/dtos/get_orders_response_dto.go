@@ -1,7 +1,6 @@
 package dtos
 
 import (
-	"github.com/DavidReque/go-food-delivery/internal/pkg/utils"
 	dtosV1 "github.com/DavidReque/go-food-delivery/internal/services/orderservice/internal/orders/dtos/v1"
 )
 

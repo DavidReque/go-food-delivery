@@ -16,6 +16,8 @@ import (
 // CustomTime provides an example of how to declare a new time Type with a custom formatter.
 // Note that time.Time methods are not available, if needed you can add and cast like the String method does
 // Otherwise, only use in the json struct at marshal/unmarshal time.
+// @Description Custom type for handling dates and times
+// @Format date-time
 type CustomTime time.Time
 
 // UnmarshalJSON Parses the json string in the custom format

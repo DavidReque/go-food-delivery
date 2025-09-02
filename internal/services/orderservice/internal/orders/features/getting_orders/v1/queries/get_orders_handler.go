@@ -50,7 +50,16 @@ func (c *GetOrdersHandler) Handle(
 		)
 	}
 
+	// Mapear a OrdersListResult
+	ordersListResult := &dtos.OrdersListResult{
+		Size:       listResultDto.Size,
+		Page:       listResultDto.Page,
+		TotalItems: listResultDto.TotalItems,
+		TotalPage:  listResultDto.TotalPage,
+		Items:      listResultDto.Items,
+	}
+
 	c.log.Info("[GetOrdersHandler.Handle] orders fetched")
 
-	return &dtos.GetOrdersResponseDto{Orders: listResultDto}, nil
+	return &dtos.GetOrdersResponseDto{Orders: ordersListResult}, nil
 }
