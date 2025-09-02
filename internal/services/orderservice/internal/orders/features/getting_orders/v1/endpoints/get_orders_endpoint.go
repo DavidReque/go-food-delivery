@@ -31,11 +31,15 @@ func (ep *getOrdersEndpoint) MapEndpoint() {
 // GetAllOrders
 // @Tags Orders
 // @Summary Get all orders
-// @Description Get all orders
+// @Description Get all orders with pagination and filters
 // @Accept json
 // @Produce json
-// @Param getOrdersRequestDto query dtos.GetOrdersRequestDto false "GetOrdersRequestDto"
+// @Param page query int false "Page number" default(1) minimum(1)
+// @Param size query int false "Page size" default(10) minimum(1) maximum(100)
+// @Param orderBy query string false "Field to order by"
+// @Param filters query string false "Applied filters"
 // @Success 200 {object} dtos.GetOrdersResponseDto
+// @Failure 400 {object} object
 // @Router /api/v1/orders [get]
 func (ep *getOrdersEndpoint) handler() echo.HandlerFunc {
 	return func(c echo.Context) error {

@@ -37,6 +37,8 @@ func (ep *createOrderEndpoint) MapEndpoint() {
 // @Produce json
 // @Param CreateOrderRequestDto body dtos.CreateOrderRequestDto true "Order data"
 // @Success 201 {object} dtos.CreateOrderResponseDto
+// @Failure 400 {object} object
+// @Failure 422 {object} object
 // @Router /api/v1/orders [post]
 func (ep *createOrderEndpoint) handler() echo.HandlerFunc {
 	return func(c echo.Context) error {

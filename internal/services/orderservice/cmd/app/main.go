@@ -22,11 +22,26 @@ var rootCmd = &cobra.Command{
 
 // https://github.com/swaggo/swag#how-to-use-it-with-gin
 
-// @contact.name David Requeno
-// @contact.url https://github.com/DavidReque
 // @title Orders Service Api
 // @version 1.0
-// @description Orders Service Api
+// @description Orders Service Api for order management
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name David Requeno
+// @contact.url https://github.com/DavidReque
+// @contact.email davidrequeno52@gmail.com
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:8080
+// @BasePath /api/v1
+// @schemes http https
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Enter "Bearer" followed by a space and the JWT token
 func main() {
 	pterm.DefaultBigText.WithLetters(
 		putils.LettersFromStringWithStyle("Orders", pterm.FgLightGreen.ToStyle()),

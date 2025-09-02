@@ -1,0 +1,298 @@
+basePath: /api/v1
+definitions:
+  dtos.CreateOrderRequestDto:
+    description: DTO to create a new order
+    properties:
+      accountEmail:
+        description: |-
+          @Description Email of the user's account
+          @Required
+          @Pattern ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+        example: user@example.com
+        type: string
+      deliveryAddress:
+        description: |-
+          @Description Delivery address
+          @Required
+        example: Main Street 123, City
+        type: string
+      deliveryTime:
+        description: |-
+          @Description Delivery time in RFC3339 format
+          @Required
+          @Format date-time
+        type: string
+      shopItems:
+        description: |-
+          @Description List of items from the shop
+          @Required
+        items:
+          $ref: '#/definitions/dtosV1.ShopItemDto'
+        type: array
+    type: object
+  dtos.CreateOrderResponseDto:
+    description: DTO for response to create orders
+    properties:
+      Id:
+        description: |-
+          @Description Unique ID of the created order
+          @Required
+        type: string
+    type: object
+  dtos.GetOrderByIdResponseDto:
+    description: DTO for response to get order by id
+    properties:
+      order:
+        allOf:
+        - $ref: '#/definitions/dtosV1.OrderReadDto'
+        description: '@Description Found order'
+    type: object
+  dtos.GetOrdersResponseDto:
+    description: DTO for response to get orders with pagination
+    properties:
+      orders:
+        allOf:
+        - $ref: '#/definitions/dtos.OrdersListResult'
+        description: '@Description Paginated list of orders'
+    type: object
+  dtos.OrdersListResult:
+    description: Paginated result for orders
+    properties:
+      items:
+        description: '@Description Current page orders'
+        items:
+          $ref: '#/definitions/dtosV1.OrderReadDto'
+        type: array
+      page:
+        description: '@Description Current page number'
+        type: integer
+      size:
+        description: '@Description Current page size'
+        type: integer
+      totalItems:
+        description: '@Description Total available items'
+        type: integer
+      totalPage:
+        description: '@Description Total available pages'
+        type: integer
+    type: object
+  dtosV1.OrderReadDto:
+    description: DTO for reading orders from the system
+    properties:
+      accountEmail:
+        description: '@Description Email of the user''s account'
+        type: string
+      cancelReason:
+        description: '@Description Reason for cancellation (if applicable)'
+        type: string
+      canceled:
+        description: '@Description Indicates if the order has been cancelled'
+        type: boolean
+      completed:
+        description: '@Description Indicates if the order has been completed'
+        type: boolean
+      createdAt:
+        description: |-
+          @Description Creation date
+          @Format date-time
+        type: string
+      deliveredTime:
+        description: |-
+          @Description Delivery time
+          @Format date-time
+        type: string
+      deliveryAddress:
+        description: '@Description Delivery address'
+        type: string
+      id:
+        description: '@Description Unique ID of the order'
+        type: string
+      orderId:
+        description: '@Description ID of the order for external reference'
+        type: string
+      paid:
+        description: '@Description Indicates if the order has been paid'
+        type: boolean
+      paymentId:
+        description: '@Description ID of the associated payment'
+        type: string
+      shopItems:
+        description: '@Description List of items from the shop in the order'
+        items:
+          $ref: '#/definitions/dtosV1.ShopItemReadDto'
+        type: array
+      submitted:
+        description: '@Description Indicates if the order has been sent'
+        type: boolean
+      totalPrice:
+        description: '@Description Total price of the order'
+        type: number
+      updatedAt:
+        description: |-
+          @Description Last update date
+          @Format date-time
+        type: string
+    type: object
+  dtosV1.ShopItemDto:
+    description: DTO for representing an item from the shop in an order
+    properties:
+      description:
+        description: '@Description Description of the product'
+        type: string
+      price:
+        description: |-
+          @Description Unit price of the product
+          @Required
+          @Minimum 0
+        type: number
+      quantity:
+        description: |-
+          @Description Quantity of the product
+          @Required
+          @Minimum 1
+        type: integer
+      title:
+        description: |-
+          @Description Title of the product
+          @Required
+        type: string
+    type: object
+  dtosV1.ShopItemReadDto:
+    description: DTO for reading items from the shop in an order
+    properties:
+      description:
+        description: '@Description Description of the product'
+        type: string
+      price:
+        description: '@Description Unit price of the product'
+        type: number
+      quantity:
+        description: '@Description Quantity of the product'
+        type: integer
+      title:
+        description: '@Description Title of the product'
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: davidrequeno52@gmail.com
+    name: David Requeno
+    url: https://github.com/DavidReque
+  description: Orders Service Api for order management
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Orders Service Api
+  version: "1.0"
+paths:
+  /api/v1/orders:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders with pagination and filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      - description: Field to order by
+        in: query
+        name: orderBy
+        type: string
+      - description: Applied filters
+        in: query
+        name: filters
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GetOrdersResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: Get all orders
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      description: Create new order
+      parameters:
+      - description: Order data
+        in: body
+        name: CreateOrderRequestDto
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateOrderRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CreateOrderResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: object
+      summary: Create order
+      tags:
+      - Orders
+  /api/v1/orders/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get order by id
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GetOrderByIdResponseDto'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: object
+      summary: Get order by id
+      tags:
+      - Orders
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: Enter "Bearer" followed by a space and the JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

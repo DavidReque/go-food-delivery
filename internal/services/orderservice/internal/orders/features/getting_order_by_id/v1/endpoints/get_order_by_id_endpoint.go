@@ -35,6 +35,8 @@ func (ep *getOrderByIdEndpoint) MapEndpoint() {
 // @Produce json
 // @Param id path string true "Order ID"
 // @Success 200 {object} dtos.GetOrderByIdResponseDto
+// @Failure 400 {object} object
+// @Failure 404 {object} object
 // @Router /api/v1/orders/{id} [get]
 func (ep *getOrderByIdEndpoint) handler() echo.HandlerFunc {
 	return func(c echo.Context) error {

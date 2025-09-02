@@ -126,40 +126,6 @@ Order
 - **Cancellation Policy**: Time-based cancellation rules
 - **Quality Assurance**: Order validation and verification
 
-## 🚚 **Driver Domain**
-
-### **Driver Entity Structure**
-
-```
-Driver
-├── Profile
-│   ├── PersonalInfo, ContactDetails
-│   ├── VehicleInfo, LicenseDetails
-│   └── Insurance, BackgroundCheck
-├── Operations
-│   ├── CurrentLocation, Availability
-│   ├── ActiveOrders, OrderHistory
-│   ├── Rating, PerformanceMetrics
-│   └── Earnings, Commission
-├── Status
-│   ├── Online/Offline, Busy/Available
-│   ├── CurrentZone, PreferredAreas
-│   └── WorkingHours, BreakTime
-└── Compliance
-    ├── HealthChecks, SafetyTraining
-    ├── VehicleMaintenance, Insurance
-    └── RegulatoryCompliance
-```
-
-### **Business Rules - Driver**
-
-- **Availability**: Can only accept orders when online
-- **Capacity Management**: Maximum simultaneous orders
-- **Zone Coverage**: Orders only in assigned areas
-- **Working Hours**: Compliance with scheduled shifts
-- **Performance Standards**: Minimum rating requirements
-- **Safety Compliance**: Regular health and vehicle checks
-
 ## 💰 **Financial Domain**
 
 ### **Pricing Components**
