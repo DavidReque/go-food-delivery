@@ -32,12 +32,22 @@ func (ep *getProductsEndpoint) MapEndpoint() {
 
 // GetAllProducts
 // @Tags Products
-// @Summary Get all product
-// @Description Get all products
+// @Summary Get all products
+// @Description Get all products with pagination, filtering and sorting capabilities
 // @Accept json
 // @Produce json
-// @Param getProductsRequestDto query dtos.GetProductsRequestDto false "GetProductsRequestDto"
-// @Success 200 {object} dtos.GetProductsResponseDto
+// @Param page query int false "Page number" default(1) minimum(1)
+// @Param size query int false "Page size" default(10) minimum(1) maximum(100)
+// @Param orderBy query string false "Field to order by" example("createdAt")
+// @Param filters query string false "Applied filters" example("field=name&value=pizza&comparison=contains")
+// @Success 200 {object} dtos.GetProductsResponseDto "Products retrieved successfully"
+// @Success 206 {object} dtos.GetProductsResponseDto "Partial content - Paginated results"
+// @Failure 400 {object} object "Bad request - Invalid query parameters"
+// @Failure 401 {object} object "Unauthorized - Missing or invalid authentication"
+// @Failure 403 {object} object "Forbidden - Insufficient permissions"
+// @Failure 404 {object} object "Not found - No products match the criteria"
+// @Failure 429 {object} object "Too many requests - Rate limit exceeded"
+// @Failure 500 {object} object "Internal server error - Something went wrong"
 // @Router /api/v1/products [get]
 func (ep *getProductsEndpoint) handler() echo.HandlerFunc {
 	return func(c echo.Context) error {

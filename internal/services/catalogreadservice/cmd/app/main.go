@@ -21,11 +21,44 @@ var rootCmd = &cobra.Command{
 
 // https://github.com/swaggo/swag#how-to-use-it-with-gin
 
-// @contact.name David Requeno
-// @contact.url https://github.com/DavidReque
 // @title Catalogs Read-Service Api
 // @version 1.0
-// @description Catalogs Read-Service Api.
+// @description Catalogs Read-Service Api for product reading and searching with comprehensive endpoints
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name David Requeno
+// @contact.url https://github.com/DavidReque
+// @contact.email davidrequeno52@gmail.com
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:7001
+// @BasePath /api/v1
+// @schemes http https
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
+// @description Enter "Bearer" followed by a space and the JWT token
+
+// @tag.name Products
+// @tag.description Operations about products
+
+// @tag.name Catalogs
+// @tag.description Catalog reading operations
+
+// @tag.name Authentication
+// @tag.description Authentication operations
+
+// @x-extension-openapi {"example": "value on a json level"}
+
+// @servers.url http://localhost:7001
+// @servers.description Development server
+
+// @servers.url https://api.production.com
+// @servers.description Production server
 func main() {
 	pterm.DefaultBigText.WithLetters(
 		putils.LettersFromStringWithStyle("Catalogs", pterm.FgLightGreen.ToStyle()),

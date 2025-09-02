@@ -64,7 +64,7 @@ func (ic *CatalogsServiceConfigurator) MapCatalogsEndpoints() {
 				})
 
 			// config catalogs swagger
-			// ic.configSwagger(catalogsServer.RouteBuilder())
+			ic.configSwagger(catalogsServer.RouteBuilder())
 
 			return nil
 		},

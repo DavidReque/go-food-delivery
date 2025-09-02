@@ -1,0 +1,287 @@
+basePath: /api/v1
+definitions:
+  dto.ProductDto:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      productId:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  dtos.GetProductByIdResponseDto:
+    properties:
+      product:
+        $ref: "#/definitions/dto.ProductDto"
+    type: object
+  dtos.GetProductsResponseDto:
+    description:
+      DTO for response to get products with pagination and comprehensive
+      product list
+    properties:
+      products:
+        allOf:
+          - $ref: "#/definitions/dtos.ProductsListResult"
+        description: "@Description Paginated list of products with metadata"
+    type: object
+  dtos.ProductsListResult:
+    description: Paginated result for products with navigation and summary information
+    properties:
+      items:
+        description:
+          "@Description List of products for the current page with full
+          details"
+        items:
+          $ref: "#/definitions/dto.ProductDto"
+        type: array
+      page:
+        description: |-
+          @Description Current page number for navigation
+          @Example 1
+        type: integer
+      size:
+        description: |-
+          @Description Number of products displayed on the current page
+          @Example 10
+        type: integer
+      totalItems:
+        description: |-
+          @Description Total number of products available across all pages
+          @Example 150
+        type: integer
+      totalPage:
+        description: |-
+          @Description Total number of pages available for navigation
+          @Example 15
+        type: integer
+    type: object
+  dtos.SearchProductsResponseDto:
+    description: DTO for response to search products with pagination and search results
+    properties:
+      products:
+        allOf:
+          - $ref: "#/definitions/dtos.ProductsListResult"
+        description: "@Description Paginated list of search results with metadata"
+    type: object
+host: localhost:7001
+info:
+  contact:
+    email: davidrequeno52@gmail.com
+    name: David Requeno
+    url: https://github.com/DavidReque
+  description:
+    Catalogs Read-Service Api for product reading and searching with comprehensive
+    endpoints
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Catalogs Read-Service Api
+  version: "1.0"
+paths:
+  /api/v1/products:
+    get:
+      consumes:
+        - application/json
+      description: Get all products with pagination, filtering and sorting capabilities
+      parameters:
+        - default: 1
+          description: Page number
+          in: query
+          minimum: 1
+          name: page
+          type: integer
+        - default: 10
+          description: Page size
+          in: query
+          maximum: 100
+          minimum: 1
+          name: size
+          type: integer
+        - description: Field to order by
+          example: '"createdAt"'
+          in: query
+          name: orderBy
+          type: string
+        - description: Applied filters
+          example: '"field=name&value=pizza&comparison=contains"'
+          in: query
+          name: filters
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Products retrieved successfully
+          schema:
+            $ref: "#/definitions/dtos.GetProductsResponseDto"
+        "206":
+          description: Partial content - Paginated results
+          schema:
+            $ref: "#/definitions/dtos.GetProductsResponseDto"
+        "400":
+          description: Bad request - Invalid query parameters
+          schema:
+            type: object
+        "401":
+          description: Unauthorized - Missing or invalid authentication
+          schema:
+            type: object
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            type: object
+        "404":
+          description: Not found - No products match the criteria
+          schema:
+            type: object
+        "429":
+          description: Too many requests - Rate limit exceeded
+          schema:
+            type: object
+        "500":
+          description: Internal server error - Something went wrong
+          schema:
+            type: object
+      summary: Get all products
+      tags:
+        - Products
+  /api/v1/products/{id}:
+    get:
+      consumes:
+        - application/json
+      description:
+        Get detailed information about a specific product by its unique
+        identifier
+      parameters:
+        - description: Product ID
+          format: uuid
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Product details retrieved successfully
+          schema:
+            $ref: "#/definitions/dtos.GetProductByIdResponseDto"
+        "400":
+          description: Bad request - Invalid product ID format
+          schema:
+            type: object
+        "401":
+          description: Unauthorized - Authentication required
+          schema:
+            type: object
+        "404":
+          description: Not found - Product not found
+          schema:
+            type: object
+        "500":
+          description: Internal server error - Something went wrong
+          schema:
+            type: object
+      summary: Get product by ID
+      tags:
+        - Products
+  /api/v1/products/search:
+    get:
+      consumes:
+        - application/json
+      description: Search products by text with pagination and filtering capabilities
+      parameters:
+        - description: Search text to find products
+          example: '"pizza"'
+          in: query
+          name: search
+          type: string
+        - default: 1
+          description: Page number
+          in: query
+          minimum: 1
+          name: page
+          type: integer
+        - default: 10
+          description: Page size
+          in: query
+          maximum: 100
+          minimum: 1
+          name: size
+          type: integer
+        - description: Field to order by
+          example: '"name"'
+          in: query
+          name: orderBy
+          type: string
+        - description: Applied filters
+          example: '"field=category&value=italian&comparison=eq"'
+          in: query
+          name: filters
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Products found successfully
+          schema:
+            $ref: "#/definitions/dtos.SearchProductsResponseDto"
+        "206":
+          description: Partial content - Paginated results
+          schema:
+            $ref: "#/definitions/dtos.SearchProductsResponseDto"
+        "400":
+          description: Bad request - Invalid search parameters
+          schema:
+            type: object
+        "401":
+          description: Unauthorized - Missing or invalid authentication
+          schema:
+            type: object
+        "403":
+          description: Forbidden - Insufficient permissions
+          schema:
+            type: object
+        "404":
+          description: Not found - No products match the search criteria
+          schema:
+            type: object
+        "429":
+          description: Too many requests - Rate limit exceeded
+          schema:
+            type: object
+        "500":
+          description: Internal server error - Something went wrong
+          schema:
+            type: object
+      summary: Search products
+      tags:
+        - Products
+schemes:
+  - http
+  - https
+securityDefinitions:
+  BearerAuth:
+    description: Enter "Bearer" followed by a space and the JWT token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
+tags:
+  - description: Operations about products
+    name: Products
+  - description: Catalog reading operations
+    name: Catalogs
+  - description: Authentication operations
+    name: Authentication
+x-extension-openapi:
+  example: value on a json level

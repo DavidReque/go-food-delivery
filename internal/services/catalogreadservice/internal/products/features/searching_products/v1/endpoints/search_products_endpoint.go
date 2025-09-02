@@ -35,11 +35,22 @@ func (ep *searchProductsEndpoint) MapEndpoint() {
 // SearchProducts
 // @Tags Products
 // @Summary Search products
-// @Description Search products
+// @Description Search products by text with pagination and filtering capabilities
 // @Accept json
 // @Produce json
-// @Param searchProductsRequestDto query dtos.SearchProductsRequestDto false "SearchProductsRequestDto"
-// @Success 200 {object} dtos.SearchProductsResponseDto
+// @Param search query string false "Search text to find products" example("pizza")
+// @Param page query int false "Page number" default(1) minimum(1)
+// @Param size query int false "Page size" default(10) minimum(1) maximum(100)
+// @Param orderBy query string false "Field to order by" example("name")
+// @Param filters query string false "Applied filters" example("field=category&value=italian&comparison=eq")
+// @Success 200 {object} dtos.SearchProductsResponseDto "Products found successfully"
+// @Success 206 {object} dtos.SearchProductsResponseDto "Partial content - Paginated results"
+// @Failure 400 {object} object "Bad request - Invalid search parameters"
+// @Failure 401 {object} object "Unauthorized - Missing or invalid authentication"
+// @Failure 403 {object} object "Forbidden - Insufficient permissions"
+// @Failure 404 {object} object "Not found - No products match the search criteria"
+// @Failure 429 {object} object "Too many requests - Rate limit exceeded"
+// @Failure 500 {object} object "Internal server error - Something went wrong"
 // @Router /api/v1/products/search [get]
 func (ep *searchProductsEndpoint) handler() echo.HandlerFunc {
 	return func(c echo.Context) error {

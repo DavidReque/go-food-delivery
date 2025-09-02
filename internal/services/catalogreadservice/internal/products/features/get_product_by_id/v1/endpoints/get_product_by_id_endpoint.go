@@ -33,12 +33,16 @@ func (ep *getProductByIdEndpoint) MapEndpoint() {
 
 // GetProductByID
 // @Tags Products
-// @Summary Get product
-// @Description Get product by id
+// @Summary Get product by ID
+// @Description Get detailed information about a specific product by its unique identifier
 // @Accept json
 // @Produce json
-// @Param id path string true "Product ID"
-// @Success 200 {object} dtos.GetProductByIdResponseDto
+// @Param id path string true "Product ID" format(uuid)
+// @Success 200 {object} dtos.GetProductByIdResponseDto "Product details retrieved successfully"
+// @Failure 400 {object} object "Bad request - Invalid product ID format"
+// @Failure 401 {object} object "Unauthorized - Authentication required"
+// @Failure 404 {object} object "Not found - Product not found"
+// @Failure 500 {object} object "Internal server error - Something went wrong"
 // @Router /api/v1/products/{id} [get]
 func (ep *getProductByIdEndpoint) handler() echo.HandlerFunc {
 	return func(c echo.Context) error {
