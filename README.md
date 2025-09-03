@@ -11,7 +11,7 @@
 ## 🎯 **Why this project?**
 
 - **Learn Microservices**: Practical implementation of distributed services
-- **Architectural Patterns**: CQRS, Event Sourcing, Domain-Driven Design
+- **Architectural Patterns**: [CQRS](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs), Event Sourcing, [Domain-Driven Design](https://herbertograca.com/2016/08/15/pppddd-1-what-is-domain-driven-design/)
 - **Modern Technologies**: Go, Docker, OpenTelemetry, EventStoreDB
 - **Real Use Cases**: Food delivery system as a practical example
 - **Clean Code**: Implementation following [SOLID principles](https://en.wikipedia.org/wiki/SOLID) and Clean Architecture
