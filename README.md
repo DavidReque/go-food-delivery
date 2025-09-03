@@ -14,7 +14,7 @@
 - **Architectural Patterns**: CQRS, Event Sourcing, Domain-Driven Design
 - **Modern Technologies**: Go, Docker, OpenTelemetry, EventStoreDB
 - **Real Use Cases**: Food delivery system as a practical example
-- **Clean Code**: Implementation following SOLID principles and Clean Architecture
+- **Clean Code**: Implementation following [SOLID principles](https://en.wikipedia.org/wiki/SOLID) and Clean Architecture
 
 ## 🚀 **Implemented Features**
 
@@ -53,8 +53,6 @@
 
 ### **🚧 Features Pending Implementation**
 
-#### **🧪 Testing and Quality**
-
 - 🚧 **Unit Tests** for testing small units with mocking of dependent classes using Mockery
 - 🚧 **End-to-End and Integration Tests** for testing features with all their real dependencies using Docker containers and the testcontainers-go library
 
@@ -91,13 +89,9 @@ Each microservice follows Go project best practices:
 
 - **[Standard Go Project Layout](https://github.com/golang-standards/project-layout)** - Standard structure recommended by the Go community
 
-### **📂 Recommended Directory Structure**
-
-Following the [Standard Go Project Layout](https://github.com/golang-standards/project-layout), each service includes:
-
 ### **Main Services**
 
-#### **1. Catalog Read Service** 📚
+#### **1. [Catalog Read Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/catalogreadservice)** 📚
 
 - **Purpose**: Read-only service for product queries
 - **HTTP Port**: 7001
@@ -105,7 +99,7 @@ Following the [Standard Go Project Layout](https://github.com/golang-standards/p
 - **Database**: MongoDB + Redis (cache)
 - **Pattern**: CQRS with query optimization
 
-#### **2. Catalog Write Service** ✏️
+#### **2. [Catalog Write Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/catalogwriteservice)** ✏️
 
 - **Purpose**: Product catalog management and modification
 - **HTTP Port**: 7002
@@ -113,7 +107,7 @@ Following the [Standard Go Project Layout](https://github.com/golang-standards/p
 - **Database**: PostgreSQL
 - **Pattern**: Domain-Driven Design with aggregates
 
-#### **3. Order Service** 🛒
+#### **3. [Order Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/orderservice)** 🛒
 
 - **Purpose**: Complete order lifecycle management
 - **HTTP Port**: 8000
@@ -134,13 +128,9 @@ Following the [Standard Go Project Layout](https://github.com/golang-standards/p
 
 ### **🎯 Application Structure**
 
-![Application Structure](./assets/vertical_slice_architecture.png)
+In this project we implement **[Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)** along with **[feature folder structure](https://www.kamilgrzybek.com/blog/posts/feature-folders)**.
 
-![Application Structure](./assets/vsa2.png)
-
-In this project we implement **Vertical Slice Architecture** along with **feature folder structure**.
-
-#### **🔪 What is Vertical Slice Architecture?**
+#### **🔪 What is [Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)?**
 
 **Main Concept**: We treat each request as a **distinct use case or slice**, encapsulating and grouping all concerns from front-end to back-end.
 
@@ -161,11 +151,15 @@ In this project we implement **Vertical Slice Architecture** along with **featur
 - ✅ **New features only add code**, we don't change shared code
 - ✅ **We don't worry about side effects** in other parts
 
-### **⚙️ Implementation with CQRS**
+![Application Structure](./assets/vertical_slice_architecture.png)
+
+![Application Structure](./assets/vsa2.png)
+
+### **⚙️ Implementation with [CQRS](https://www.kurrent.io/cqrs-pattern)**
 
 #### **Why is CQRS Perfect for Vertical Slices?**
 
-We use **CQRS** (Command Query Responsibility Segregation) to decompose our features into very small parts that make our application:
+We use **[CQRS](https://www.kurrent.io/cqrs-pattern)** (Command Query Responsibility Segregation) to decompose our features into very small parts that make our application:
 
 - **Maximize performance, scalability and simplicity**
 - **Adding new features is very easy** without disruptive changes
@@ -331,7 +325,7 @@ I use the [intellij-plugin-golangci-lint](https://github.com/xxpxxxxp/intellij-p
 
 I use [mvdan/gofumpt](https://github.com/mvdan/gofumpt), [goimports-reviser](https://github.com/incu6us/goimports-reviser), [golines](https://github.com/segmentio/golines) and [golangci-lint](https://golangci-lint.run/usage/integrations/#goland) in GoLand.
 
-### **🚀 Automatic Configuration with Husky**
+### **🚀 Automatic Configuration with [Husky](https://github.com/typicode/husky)**
 
 You can control this formatting with `husky` automatically before any commit by installing [husky](https://github.com/typicode/husky) in your development environment:
 
