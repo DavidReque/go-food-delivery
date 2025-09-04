@@ -18,32 +18,32 @@ The **Catalog Write Service** is a microservice specialized in write operations 
 
 ### Go Frameworks and Libraries
 
-- **github.com/labstack/echo/v4**: High-performance web framework
-- **go.uber.org/fx**: Framework for building applications with DI
-- **gorm.io/gorm**: ORM for database interaction
+- **[github.com/labstack/echo/v4](https://github.com/labstack/echo/)**: High-performance web framework
+- **[go.uber.org/fx](https://github.com/uber-go/fx)**: Framework for building applications with DI
+- **[gorm.io/gorm](https://gorm.io/)**: ORM for database interaction
 
 ### Validation and Error Handling
 
-- **github.com/go-playground/validator/v10**: Structure validation
-- **emperror.dev/errors**: Advanced error handling
-- **github.com/pkg/errors**: Error handling utilities
+- **[github.com/go-playground/validator/v10](https://github.com/go-playground/validator)**: Structure validation
+- **[emperror.dev/errors](https://github.com/emperror/errors)**: Advanced error handling
+- **[github.com/pkg/errors](https://github.com/pkg/errors)**: Error handling utilities
 
 ### Messaging and RPC
 
-- **google.golang.org/grpc**: RPC communication
-- **github.com/rabbitmq/amqp091-go**: RabbitMQ messaging
-- **github.com/mehdihadeli/go-mediatr**: Mediator pattern
+- **[google.golang.org/grpc](https://grpc.io/)**: RPC communication
+- **[github.com/rabbitmq/amqp091-go](https://github.com/rabbitmq/amqp091-go)**: RabbitMQ messaging
+- **[github.com/mehdihadeli/go-mediatr](https://github.com/mehdihadeli/go-mediatr)**: Mediator pattern
 
 ### Observability
 
-- **go.opentelemetry.io/otel**: Tracing and metrics
+- **[go.opentelemetry.io/otel](https://opentelemetry.io/)**: Tracing and metrics
 
 ### Utilities
 
-- **github.com/spf13/cobra**: Command-line applications
-- **github.com/satori/go.uuid**: UUID generation
-- **github.com/brianvoe/gofakeit/v7**: Fake data generation
-- **github.com/iancoleman/strcase**: String conversion utilities
+- **[github.com/spf13/cobra](https://github.com/spf13/cobra)**: Command-line applications
+- **[github.com/satori/go.uuid](https://github.com/satori/go.uuid)**: UUID generation
+- **[github.com/brianvoe/gofakeit/v7](https://github.com/brianvoe/gofakeit)**: Fake data generation
+- **[github.com/iancoleman/strcase](https://github.com/iancoleman/strcase)**: String conversion utilities
 
 ## System Architecture
 
@@ -197,53 +197,6 @@ sequenceDiagram
 - `config.production.json`: Configuration for production
 - `config.test.json`: Configuration for testing
 
-## Development
-
-### Prerequisites
-
-- Go 1.24.2 or higher
-- PostgreSQL 13+ or MySQL 8+
-- RabbitMQ 3.8+
-- Docker (optional)
-
-### Installation
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd go-food-delivery/internal/services/catalogwriteservice
-
-# Install dependencies
-go mod download
-
-# Run migrations
-go run cmd/migration/main.go
-
-# Run the service
-go run cmd/app/main.go
-```
-
-### Useful Commands
-
-```bash
-# Generate Swagger documentation
-swag init -g cmd/app/main.go
-
-# Format code
-go fmt ./...
-
-# Linter
-golangci-lint run
-```
-
-### Docker
-
-```bash
-# Build image
-docker build -t catalogwriteservice .
-
-# Run container
-docker run -p 7001:7001 catalogwriteservice
 ```
 
 ## API Documentation
@@ -272,3 +225,4 @@ Complete API documentation is available at:
 - **Distributed Tracing**: Distributed traceability
 - **Jaeger Compatible**: Compatible with Jaeger
 - **Performance Monitoring**: Performance monitoring
+```
