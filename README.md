@@ -18,45 +18,45 @@
 
 ## 🚀 **Implemented Features**
 
-### **🏗️ Architecture and Patterns**
+**🏗️ Architecture and Patterns**
 
 - ✅ **Vertical Slice Architecture** as a high-level architecture, grouping functionalities by features instead of technical layers
 - ✅ **Event-Driven Architecture** over RabbitMQ Message Broker with a custom Event Bus for asynchronous communication between services
 - ✅ **Data-Centric Architecture** based on CRUD in the Catalogs Read Service, optimized for read operations
 - ✅ **Event Sourcing** in audit-based services like Orders Service, maintaining complete change history
 
-### **⚙️ Design Patterns**
+**⚙️ Design Patterns**
 
 - ✅ **CQRS and Mediator Pattern** implemented over the Go-MediatR library, separating commands from queries for better scalability
 - ✅ **Dependency Injection and Inversion of Control** using the uber-go/fx library for automatic dependency management
 
-### **🌐 APIs and Communication**
+**🌐 APIs and Communication**
 
 - ✅ **RESTful API** with the Echo framework and automatic documentation using swaggo/swag for Swagger
 - ✅ **gRPC Communication** for internal communication between services with high performance
 - ✅ **Data Validation** using go-playground/validator and go-ozzo/ozzo-validation to validate inputs in REST and gRPC
 
-### **🗄️ Persistence and Storage**
+**🗄️ Persistence and Storage**
 
 - ✅ **Write Databases** with PostgreSQL and EventStoreDB, supporting complete ACID transactions
 - ✅ **Read Databases** with MongoDB and Elasticsearch for optimized queries and advanced searches
 
-### **📊 Observability and Monitoring**
+**📊 Observability and Monitoring**
 
 - ✅ **Distributed Tracing** using OpenTelemetry with exporters to Jaeger and Zipkin for request tracking
 - ✅ **Metrics and Monitoring** using OpenTelemetry with Prometheus and Grafana for performance visualization
 
-### **🛠️ Tools and Utilities**
+**🛠️ Tools and Utilities**
 
 - ✅ **Structured Logging** with Zap for consistent and easy-to-analyze logs
 - ✅ **Configuration Management** with Viper for flexible configuration handling
 
-### **🚧 Features Pending Implementation**
+**🚧 Features Pending Implementation**
 
 - 🚧 **Unit Tests** for testing small units with mocking of dependent classes using Mockery
 - 🚧 **End-to-End and Integration Tests** for testing features with all their real dependencies using Docker containers and the testcontainers-go library
 
-#### **🐳 Deployment and Containers**
+**🐳 Deployment and Containers**
 
 - 🚧 **Deployment and Containers** using Docker and docker-compose to facilitate development and deployment
 - 🚧 **Kubernetes and Orchestration** for production container deployment and management
@@ -68,13 +68,13 @@
 - 🚧 **Inbox Pattern** to handle idempotency and exactly-once delivery (Exactly-once Delivery)
 - 🚧 **Circuit Breaker** for handling failures in external services
 
-#### **🌐 Infrastructure and Networking**
+**🌐 Infrastructure and Networking**
 
 - 🚧 **Service Mesh** (Istio/Linkerd) for communication between services and network policies
 - 🚧 **Centralized API Gateway** with authentication and authorization
 - 🚧 **Advanced Rate Limiting** with configurable policies per service
 
-#### **📊 Monitoring and Scalability**
+**📊 Monitoring and Scalability**
 
 - 🚧 **Auto-scaling** based on Prometheus metrics
 - 🚧 **Secrets Management** integrated with Kubernetes Secrets or Vault
@@ -91,7 +91,7 @@ Each microservice follows Go project best practices:
 
 ### **Main Services**
 
-#### **1. [Catalog Read Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/catalogreadservice)** 📚
+**1. [Catalog Read Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/catalogreadservice)** 📚
 
 - **Purpose**: Read-only service for product queries
 - **HTTP Port**: 7001
@@ -99,7 +99,7 @@ Each microservice follows Go project best practices:
 - **Database**: MongoDB + Redis (cache)
 - **Pattern**: CQRS with query optimization
 
-#### **2. [Catalog Write Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/catalogwriteservice)** ✏️
+**2. [Catalog Write Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/catalogwriteservice)** ✏️
 
 - **Purpose**: Product catalog management and modification
 - **HTTP Port**: 7002
@@ -107,7 +107,7 @@ Each microservice follows Go project best practices:
 - **Database**: PostgreSQL
 - **Pattern**: Domain-Driven Design with aggregates
 
-#### **3. [Order Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/orderservice)** 🛒
+**3. [Order Service](https://github.com/DavidReque/go-food-delivery/tree/main/internal/services/orderservice)** 🛒
 
 - **Purpose**: Complete order lifecycle management
 - **HTTP Port**: 8000
@@ -130,7 +130,7 @@ Each microservice follows Go project best practices:
 
 In this project we implement **[Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)** along with **[feature folder structure](https://www.kamilgrzybek.com/blog/posts/feature-folders)**.
 
-#### **🔪 What is [Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)?**
+**🔪 What is [Vertical Slice Architecture](https://www.jimmybogard.com/vertical-slice-architecture/)?**
 
 **Main Concept**: We treat each request as a **distinct use case or slice**, encapsulating and grouping all concerns from front-end to back-end.
 
@@ -143,7 +143,7 @@ In this project we implement **[Vertical Slice Architecture](https://www.jimmybo
 
 **Solution**: Instead of coupling across layers, **we couple vertically along a slice** and each change affects only one slice.
 
-#### **🎯 Key Principles**
+**🎯 Key Principles**
 
 - ✅ **We minimize coupling between slices**
 - ✅ **We maximize coupling within a slice**
@@ -157,7 +157,7 @@ In this project we implement **[Vertical Slice Architecture](https://www.jimmybo
 
 ### **⚙️ Implementation with [CQRS](https://www.kurrent.io/cqrs-pattern)**
 
-#### **Why is CQRS Perfect for Vertical Slices?**
+**Why is CQRS Perfect for Vertical Slices?**
 
 We use **[CQRS](https://www.kurrent.io/cqrs-pattern)** (Command Query Responsibility Segregation) to decompose our features into very small parts that make our application:
 
@@ -166,7 +166,7 @@ We use **[CQRS](https://www.kurrent.io/cqrs-pattern)** (Command Query Responsibi
 - **Easy to maintain** - changes only affect one command or query
 - **Better separation of concerns** and cross-cutting concerns
 
-#### **🔧 Advantages of CQRS + Vertical Slices Combination**
+**🔧 Advantages of CQRS + Vertical Slices Combination**
 
 **Instead of traditional technical division** (folders for services, controllers, data models), **we cut each business functionality into vertical slices**, and within each slice we have **specific technical folder structure** for that feature:
 
@@ -180,7 +180,7 @@ We use **[CQRS](https://www.kurrent.io/cqrs-pattern)** (Command Query Responsibi
 └── 📄 models/              # Specific Models
 ```
 
-#### **🎯 Benefits of this Structure**
+**🎯 Benefits of this Structure**
 
 **For a given functionality, we need**:
 
@@ -196,7 +196,7 @@ We use **[CQRS](https://www.kurrent.io/cqrs-pattern)** (Command Query Responsibi
 - Dependencies between technical divisions
 - Coupling between components
 
-#### **🚀 Architecture Advantages**
+**🚀 Architecture Advantages**
 
 **Works perfectly with CQRS**:
 
@@ -240,13 +240,13 @@ We use **[CQRS](https://www.kurrent.io/cqrs-pattern)** (Command Query Responsibi
 
 ## 🚀 **Quick Start**
 
-### **Prerequisites**
+**Prerequisites**
 
 - Go 1.24 or higher
 - Docker and Docker Compose
 - Make (optional, but recommended)
 
-### **Installation and Execution**
+**Installation and Execution**
 
 1. **Clone the repository:**
 
@@ -315,13 +315,13 @@ make docker-logs      # View service logs
 
 In this application, I use **Conventional Commit** and to enforce its rules I use [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint) and [typicode/husky](https://github.com/typicode/husky) with a pre-commit hook.
 
-### **🔧 Tool Configuration**
+**🔧 Tool Configuration**
 
-#### **To apply golangci-lint at IDE level**
+**To apply golangci-lint at IDE level**
 
 I use the [intellij-plugin-golangci-lint](https://github.com/xxpxxxxp/intellij-plugin-golangci-lint) plugin.
 
-#### **For code formatting**
+**For code formatting**
 
 I use [mvdan/gofumpt](https://github.com/mvdan/gofumpt), [goimports-reviser](https://github.com/incu6us/goimports-reviser), [golines](https://github.com/segmentio/golines) and [golangci-lint](https://golangci-lint.run/usage/integrations/#goland) in GoLand.
 
@@ -329,62 +329,62 @@ I use [mvdan/gofumpt](https://github.com/mvdan/gofumpt), [goimports-reviser](htt
 
 You can control this formatting with `husky` automatically before any commit by installing [husky](https://github.com/typicode/husky) in your development environment:
 
-#### **1. Install Tools:**
+**1. Install Tools:**
 
 ```bash
 make install-tools
 ```
 
-#### **2. Install NPM:**
+**2. Install NPM:**
 
 ```bash
 npm init
 ```
 
-#### **3. Install CommitLint:**
+**3. Install CommitLint:**
 
 ```bash
 npm install --save-dev @commitlint/config-conventional @commitlint/cli
 ```
 
-#### **4. Create the `commitlint.config.js` file with this content:**
+**4. Create the `commitlint.config.js` file with this content:**
 
 ```js
 module.exports = { extends: ["@commitlint/config-conventional"] };
 ```
 
-#### **5. Install Husky:**
+**5. Install Husky:**
 
 ```bash
 npm install husky --save-dev
 ```
 
-#### **6. Add `prepare` command to install and activate `husky hooks`:**
+**6. Add `prepare` command to install and activate `husky hooks`:**
 
 ```bash
 npm pkg set scripts.prepare="husky install"
 ```
 
-#### **7. Create the Husky folder:**
+**7. Create the Husky folder:**
 
 ```bash
 mkdir .husky
 ```
 
-#### **8. Add hooks for linting and formatting before commit:**
+**8. Add hooks for linting and formatting before commit:**
 
 ```bash
 npx husky add .husky/pre-commit "make format && git add -A ."
 npx husky add .husky/pre-commit "make lint && git add -A ."
 ```
 
-#### **9. Add CommitLint to husky before commit:**
+**9. Add CommitLint to husky before commit:**
 
 ```bash
 npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
 ```
 
-#### **10. Activate and install all husky hooks:**
+**10. Activate and install all husky hooks:**
 
 ```bash
 npm run prepare
@@ -394,7 +394,7 @@ npm run prepare
 
 For live reloading in development mode I use the [air](https://github.com/cosmtrek/air) library. For a guide on using these tools, you can [read this article](https://mainawycliffe.dev/blog/live-reloading-golang-using-air/).
 
-### **🚀 Run in Live Reload Mode**
+**🚀 Run in Live Reload Mode**
 
 To run each microservice in `live reload mode`, inside each service folder type the following command after [installing air](https://github.com/cosmtrek/air?ref=content.mainawycliffe.dev#via-go-install):
 
@@ -411,7 +411,7 @@ This project is designed to be a learning tool. I invite you to:
 3. **Contribute** improvements or new features
 4. **Learn** from existing implementations
 
-### **How to Contribute**
+**How to Contribute**
 
 1. Fork the project
 2. Create a branch for your feature
@@ -419,7 +419,7 @@ This project is designed to be a learning tool. I invite you to:
 4. Add tests if necessary
 5. Submit a Pull Request
 
-### **Code Standards**
+**Code Standards**
 
 - Follow [Go conventions](https://golang.org/doc/effective_go.html)
 - Maintain high test coverage
