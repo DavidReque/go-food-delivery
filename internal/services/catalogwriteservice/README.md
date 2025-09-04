@@ -197,8 +197,6 @@ sequenceDiagram
 - `config.production.json`: Configuration for production
 - `config.test.json`: Configuration for testing
 
-```
-
 ## API Documentation
 
 Complete API documentation is available at:
@@ -225,4 +223,3 @@ Complete API documentation is available at:
 - **Distributed Tracing**: Distributed traceability
 - **Jaeger Compatible**: Compatible with Jaeger
 - **Performance Monitoring**: Performance monitoring
-```
